@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSTR Software Solutions</title>
+
+<!-- Standard Favicons (for browser tabs) -->
+  <link rel="icon" type="image/png" sizes="64x64" href="images/mstr.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/mstr.png">
+  
+  <!-- Apple Touch Icon (for iOS devices/bookmarks) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="images/mstr.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Boxicons (Vector Icons) -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  <!-- GSAP for Animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       MSTR Software Solutions — Design System & Styles
+       ========================================================================== */
+
+    /* ---- Tokens ---- */
+    :root {
+      --void: #050609;
+      --deep: #080816; 
+      --navy: #1A3560;
+      --white: #FFFFFF;
+      --electric: #1B8CFF;
+      --electric-soft: #5CAEFF;
+
+      --bg-base: var(--void);
+      --bg-raised: #080816;
+      --surface: rgba(255, 255, 255, 0.02);
+      --surface-strong: rgba(255, 255, 255, 0.05);
+      --border-hair: rgba(255, 255, 255, 0.12);
+      --border-strong: rgba(92, 174, 255, 0.35);
+
+      --text-primary: #FFFFFF;
+      --text-secondary: #A9B6CE;
+      --text-muted: #6B7B99;
+
+      --font-display: 'Space Grotesk', 'Inter', sans-serif;
+      --font-body: 'Inter', 'Segoe UI', sans-serif;
+      --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+      --fs-eyebrow: 0.85rem;
+      --fs-body: clamp(1rem, 0.96rem + 0.2vw, 1.08rem);
+      --fs-body-lg: clamp(1.1rem, 1.02rem + 0.4vw, 1.3rem);
+      --fs-h6: clamp(1rem, 0.95rem + 0.25vw, 1.15rem);
+      --fs-h5: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
+      --fs-h4: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+      --fs-h3: clamp(1.9rem, 1.6rem + 1.5vw, 2.6rem);
+      --fs-h2: clamp(2.3rem, 1.9rem + 2vw, 3.4rem);
+      --fs-h1: clamp(2.6rem, 2rem + 3.5vw, 4.6rem);
+      --fs-display: clamp(1.4rem, 1.05rem + 1.75vw, 2.4rem); /* Reduced hero title size */
+
+      --space-3xs: 0.25rem;
+      --space-2xs: 0.5rem;
+      --space-xs: 0.75rem;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 2.5rem;
+      --space-xl: 4rem;
+      --space-2xl: 6rem;
+      --space-3xl: 9rem;
+
+      --container-w: 1400px;
+      --container-pad: clamp(1.25rem, 4vw, 3rem);
+      
+      --radius-sm: 0px;
+      --radius-md: 0px;
+      --radius-lg: 0px;
+      --radius-pill: 0px;
+
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+      --dur-fast: 180ms;
+      --dur-med: 420ms;
+      --dur-slow: 900ms;
+    }
+
+    /* ---- Reset & Base ---- */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: auto; }
+    body, h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd { margin: 0; }
+    ul { list-style: none; margin: 0; padding: 0; }
+    img, svg, video { display: block; max-width: 100%; }
+    button { cursor: pointer; background: transparent; border: none; font: inherit; color: inherit; }
+    a { color: inherit; text-decoration: none; }
+
+    body {
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: var(--fs-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+
+    .container {
+      width: 100%; max-width: var(--container-w);
+      margin-inline: auto; padding-inline: var(--container-pad);
+    }
+    
+    .section { position: relative; padding-block: var(--space-3xl); z-index: 2; }
+    .section--tight { padding-block: var(--space-2xl); }
+    .section--dark { background: var(--bg-raised); }
+    
+    .section-head { max-width: 720px; margin-bottom: var(--space-xl); }
+    .section-head.center { margin-inline: auto; text-align: center; }
+    .section-head h2 { font-size: var(--fs-h2); margin-top: var(--space-sm); }
+    .section-head p { margin-top: var(--space-md); font-size: var(--fs-body-lg); color: var(--text-secondary); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2xs);
+      font-weight: 500; padding: 0.8rem 1.6rem;
+      border-radius: var(--radius-sm); transition: all var(--dur-fast) var(--ease-standard);
+      font-family: var(--font-body); font-size: 0.9rem;
+    }
+    .btn--primary {
+      background: var(--electric);
+      color: #fff; 
+    }
+    .btn--primary:hover { background: var(--electric-soft); transform: translateY(-2px); }
+    .btn--ghost {
+      background: transparent; border: 1px solid var(--border-hair); color: var(--white);
+    }
+    .btn--ghost:hover { border-color: var(--border-strong); background: rgba(255,255,255,0.05); transform: translateY(-2px); }
+
+    /* ---- Header ---- */
+    .site-header {
+      position: fixed; inset-inline: 0; top: 0; z-index: 100;
+      padding-block: 1.5rem; transition: all var(--dur-med);
+      border-bottom: 1px solid transparent;
+    }
+    .site-header.is-scrolled {
+      padding-block: 1rem; background: rgba(5, 6, 9, 0.95);
+      backdrop-filter: blur(16px); border-bottom-color: var(--border-hair);
+    }
+    .nav-inner { 
+      display: grid; 
+      grid-template-columns: 1fr auto 1fr; 
+      align-items: center; 
+    }
+    .brand { 
+      display: flex; align-items: center; gap: 0.3rem; 
+      font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; 
+    }
+    .brand img { height: 50px; width: auto; object-fit: contain; }
+    .nav-links { 
+      display: flex; gap: var(--space-md); justify-content: center; 
+    }
+    .nav-links a { 
+      font-size: 0.9rem; font-weight: 500; color: var(--white); 
+      transition: color var(--dur-fast);
+    }
+    .nav-links a:hover { color: var(--electric-soft); }
+    .nav-cta {
+      display: flex; justify-content: flex-end;
+    }
+    .nav-cta .btn {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border-hair);
+      font-size: 0.85rem;
+    }
+
+    /* ---- Hero ---- */
+    .hero { 
+      position: relative; 
+      height: 100vh;
+      min-height: 700px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 3rem;
+      overflow: hidden; 
+      background: var(--void);
+    }
+    .hero-bg-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      filter: brightness(0.4); 
+    }
+    .hero-content-wrapper {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 100%;
+    }
+    .hero-copy { 
+      max-width: 700px; 
+      text-align: left;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 7px;
+      height: 7px;
+      background: var(--electric); 
+    }
+    .hero-copy h1 { 
+      font-size: var(--fs-display); 
+      line-height: 1.15; 
+      margin-bottom: 1.25rem;
+    }
+    .hero-scroll-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      color: var(--white);
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: background 0.3s ease;
+    }
+    .hero-scroll-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .hero-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      color: var(--white);
+      transition: background 0.3s ease;
+    }
+    .hero-controls:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .hero-controls i {
+      font-size: 1.1rem;
+    }
+
+    /* ---- Cards & Grids (Square & Straight Lines) ---- */
+    .card {
+      background: var(--surface); 
+      border: 1px solid var(--border-hair);
+      border-radius: 0; 
+      padding: var(--space-lg);
+      transition: all var(--dur-med);
+    }
+    .card:hover {
+      border-color: var(--border-strong);
+      background: var(--surface-strong);
+    }
+    
+    /* Philosophy */
+    .philosophy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border-hair); }
+    .pillar-card { border: none; border-right: 1px solid var(--border-hair); background: transparent; padding: var(--space-xl); }
+    .pillar-card:last-child { border-right: none; }
+    .pillar-card h3 { font-size: var(--fs-h5); color: var(--white); margin-block: var(--space-sm); }
+    
+    /* Services Tabs */
+    .services-shell { display: grid; grid-template-columns: 340px 1fr; gap: var(--space-xl); align-items: start; }
+    .service-tabs { display: flex; flex-direction: column; gap: 0; position: sticky; top: 110px; border: 1px solid var(--border-hair); }
+    .service-tab {
+      display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-md);
+      border-radius: 0; border: none; border-bottom: 1px solid var(--border-hair); text-align: left; transition: all var(--dur-fast);
+      background: transparent;
+    }
+    .service-tab:last-child { border-bottom: none; }
+    .service-tab:hover { background: var(--surface); }
+    .service-tab.is-active { background: var(--surface-strong); border-left: 4px solid var(--electric); padding-left: calc(var(--space-md) - 4px); }
+    .service-tab.is-active .tab-icon { color: var(--electric); }
+    .tab-icon { 
+      width: 40px; height: 40px; display: grid; place-items: center; 
+      color: var(--text-muted); font-size: 1.4rem; transition: color var(--dur-fast);
+    }
+    .tab-text strong { display: block; font-size: 1rem; font-weight: 500; color: var(--white); }
+    .tab-text span { font-size: 0.85rem; color: var(--text-muted); }
+    
+    .service-panels { position: relative; min-height: 420px; border: 1px solid var(--border-hair); background: var(--surface); padding: var(--space-xl); }
+    .service-panel { display: none; }
+    .service-panel.is-active { display: block; }
+    .service-list { margin-top: var(--space-lg); display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem 1.5rem; }
+    .service-list li { display: flex; align-items: flex-start; gap: 0.6rem; color: var(--text-secondary); }
+    .service-list li::before { content: '■'; font-size: 0.6rem; color: var(--electric-soft); margin-top: 5px; }
+
+    /* Projects */
+    .projects-grid { display: grid; gap: var(--space-xl); }
+    .project-card { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--border-hair); background: var(--surface); }
+    .project-card:nth-child(even) { grid-template-columns: 1fr 1fr; }
+    .project-card:nth-child(even) .project-content { order: 2; border-right: none; border-left: 1px solid var(--border-hair); }
+    .project-media {
+      background: var(--bg-raised);
+      display: flex; align-items: center; justify-content: center; padding: var(--space-xl);
+    }
+    .project-content { padding: var(--space-xl); display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border-hair); }
+
+    /* UI Reference Implementation: Minimal Line Cards ("Why MSTR?") */
+    .line-cards-grid { 
+      display: grid; 
+      grid-template-columns: repeat(4, 1fr); 
+      gap: 0; 
+      padding-top: var(--space-xl);
+    }
+    .line-card {
+      border-left: 1px solid var(--border-hair);
+      padding: 0 1.5rem 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 220px;
+    }
+    .line-card-num {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: var(--space-lg);
+    }
+    .line-card-content h3 {
+      font-size: 1.1rem;
+      line-height: 1.4;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Audience (Who We Serve) - Square Grid */
+    .audience-scroller { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border: 1px solid var(--border-hair); }
+    .audience-card { padding: var(--space-lg) var(--space-md); text-align: center; border-right: 1px solid var(--border-hair); background: transparent; }
+    .audience-card:last-child { border-right: none; }
+    .audience-card i { font-size: 1.8rem; color: var(--electric-soft); margin-bottom: 1rem; }
+    
+    /* Process */
+    .process-item { display: grid; grid-template-columns: 90px 1fr; gap: var(--space-lg); padding-block: var(--space-lg); border-top: 1px solid var(--border-hair); }
+    .process-item:last-child { border-bottom: 1px solid var(--border-hair); }
+    .process-num { font-family: var(--font-mono); font-size: 1.4rem; color: var(--text-muted); transition: color 0.3s; }
+    
+    /* FAQ */
+    .faq-list { max-width: 820px; margin: 0 auto; border-top: 1px solid var(--border-hair); }
+    .faq-item { border-bottom: 1px solid var(--border-hair); }
+    .faq-question { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: var(--space-md) 0; font-size: var(--fs-h6); font-weight: 500; }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height var(--dur-med) var(--ease-out); color: var(--text-secondary); }
+    .faq-item.is-open .faq-answer { max-height: 300px; padding-bottom: var(--space-md); }
+    .plus { font-size: 1.5rem; transition: transform 0.3s; font-family: var(--font-mono); font-weight: 400; }
+    .faq-item.is-open .plus { transform: rotate(45deg); color: var(--electric-soft); }
+
+    /* Footer */
+    footer { padding-block: var(--space-2xl) var(--space-md); border-top: 1px solid var(--border-hair); background: var(--bg-raised); margin-top: var(--space-xl);}
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: var(--space-xl); margin-bottom: var(--space-xl); }
+    .footer-col h4 { margin-bottom: var(--space-sm); color: var(--white); font-family: var(--font-mono); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em; }
+    .footer-col ul li { margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.95rem; }
+
+    /* Visibility Helpers */
+    .gsap-fade-up, .gsap-stagger-grid > * {
+      visibility: hidden; 
+    }
+    .no-js .gsap-fade-up, .no-js .gsap-stagger-grid > * {
+      visibility: visible;
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 1024px) {
+      .line-cards-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem 0; }
+      .line-card { min-height: 150px; }
+      .philosophy-grid { grid-template-columns: 1fr; }
+      .pillar-card { border-right: none; border-bottom: 1px solid var(--border-hair); }
+      .pillar-card:last-child { border-bottom: none; }
+      .nav-inner { grid-template-columns: auto 1fr; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 900px) {
+      .services-shell, .projects-grid, .footer-grid { grid-template-columns: 1fr; }
+      .service-tabs { border-bottom: none; }
+      .project-card, .project-card:nth-child(even) { grid-template-columns: 1fr; }
+      .project-content { border-right: none; border-bottom: 1px solid var(--border-hair); }
+      .project-card:nth-child(even) .project-content { order: -1; border-left: none; border-bottom: 1px solid var(--border-hair); }
+      .audience-scroller { grid-template-columns: repeat(2, 1fr); }
+      .audience-card { border-bottom: 1px solid var(--border-hair); }
+      .audience-card:nth-child(even) { border-right: none; }
+    }
+@media (max-width: 600px) {
+      /* Adjust the hero container to perfectly fit mobile screens */
+      .hero {
+        height: 100dvh; 
+        min-height: auto; 
+        padding-bottom: 2rem;
+      }
+      
+      /* Control which part of the video stays in view when cropped */
+      .hero-bg-video {
+        object-position: center center; /* Change this to 'left center' or 'right center' if the action in your video is off to the side */
+      }
+
+      /* (Keep your other mobile styles below here...) */
+      .line-cards-grid { grid-template-columns: 1fr; }
+      .audience-scroller { grid-template-columns: 1fr; }
+      .audience-card { border-right: none; }
+    }
+    
+  </style>
+</head>
+<body>
+  <script>document.body.classList.remove('no-js');</script>
+
+  <!-- Header -->
+  <header class="site-header" id="header">
+    <div class="container nav-inner">
+      <a href="#" class="brand">
+        <img src="images/mstr-logo.png" alt="MSTR Logo"> 
+        <div class="brand-full">
+          <span>MSTR</span>
+        </div>
+      </a>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#projects">Projects</a>
+        <a href="#approach">Approach</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="#contact" class="btn btn--ghost">Contact Us</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section (Landing Page) -->
+  <section class="hero">
+    <video class="hero-bg-video" id="heroVideo" autoplay loop muted playsinline>
+      <source src="video/mstr-bg-video.mp4" type="video/mp4">
+    </video>
+    
+    <div class="container hero-content-wrapper">
+      <div class="hero-copy gsap-hero-el">
+        <span class="hero-eyebrow">MSTR Software Solutions</span>
+        <h1>Endless solutions.<br>Driven by innovation.<br>Built by Four.</h1>
+        <a href="#about" class="hero-scroll-btn">Scroll for more <i class='bx bx-down-arrow-alt'></i></a>
+      </div>
+      
+      <div class="hero-controls-wrapper gsap-hero-el">
+        <button class="hero-controls" id="playPauseBtn" aria-label="Pause Video">
+          <i class='bx bx-pause'></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who We Are (Philosophy) -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="section-head gsap-fade-up">
+        <span class="eyebrow">Who We Are</span>
+        <h2>Four minds. One vision.<br>Endless possibilities.</h2>
+        <p>Founded in 2026 by four young individuals who believe that technology should do more than simply exist — it should solve problems, create opportunities, and make people's lives easier.</p>
+      </div>
+      <div class="philosophy-grid gsap-stagger-grid">
+        <div class="card pillar-card">
+          <span class="eyebrow" style="margin-bottom: 0.5rem; display: block;">Focus</span>
+          <h3>Endless Solutions</h3>
+          <p style="color: var(--text-secondary);">Every problem has an opportunity for a better solution. We challenge conventional approaches to software development.</p>
+        </div>
+        <div class="card pillar-card">
+          <span class="eyebrow" style="margin-bottom: 0.5rem; display: block;">Mindset</span>
+          <h3>Driven by Innovation</h3>
+          <p style="color: var(--text-secondary);">We embrace new technologies and ideas to create smarter ways of doing things. We are continuously learning.</p>
+        </div>
+        <div class="card pillar-card">
+          <span class="eyebrow" style="margin-bottom: 0.5rem; display: block;">Foundation</span>
+          <h3>Built by Four</h3>
+          <p style="color: var(--text-secondary);">Four founders, four perspectives, one united vision. We combine engineering, creativity, and entrepreneurial thinking.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UI Reference Implementation: Why MSTR? -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="section-head gsap-fade-up" style="margin-bottom: var(--space-lg);">
+        <h2>Why work with us</h2>
+      </div>
+      
+      <div class="line-cards-grid gsap-stagger-grid">
+        <div class="line-card">
+          <span class="line-card-num">01</span>
+          <div class="line-card-content">
+            <h3>Innovation First. Exploring emerging technologies</h3>
+          </div>
+        </div>
+        <div class="line-card">
+          <span class="line-card-num">02</span>
+          <div class="line-card-content">
+            <h3>Built Around You. Listening before we build</h3>
+          </div>
+        </div>
+        <div class="line-card">
+          <span class="line-card-num">03</span>
+          <div class="line-card-content">
+            <h3>Scalable by Design. Future-proof architecture</h3>
+          </div>
+        </div>
+        <div class="line-card">
+          <span class="line-card-num">04</span>
+          <div class="line-card-content">
+            <h3>Practical Solutions. Intuitive and maintainable</h3>
+          </div>
+        </div>
+        <div class="line-card" style="margin-top: 2rem;">
+          <span class="line-card-num">05</span>
+          <div class="line-card-content">
+            <h3>Security Conscious. Data protection at the core</h3>
+          </div>
+        </div>
+        <div class="line-card" style="margin-top: 2rem;">
+          <span class="line-card-num">06</span>
+          <div class="line-card-content">
+            <h3>Long-Term Thinking. Ongoing evolution</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services (Tabs) -->
+  <section id="services" class="section">
+    <div class="container">
+      <div class="section-head gsap-fade-up">
+        <span class="eyebrow">What We Do</span>
+        <h2>Software solutions built around your needs.</h2>
+        <p>Every organization has different challenges. We don't believe in forcing businesses into generic technology. We build solutions around the problem.</p>
+      </div>
+
+      <div class="services-shell gsap-fade-up">
+        <div class="service-tabs">
+          <button class="service-tab is-active" data-target="tab-mobile">
+            <div class="tab-icon"><i class='bx bx-mobile-alt'></i></div>
+            <div class="tab-text"><strong>Mobile Apps</strong><span>Usability & Performance</span></div>
+          </button>
+          <button class="service-tab" data-target="tab-web">
+            <div class="tab-icon"><i class='bx bx-window-alt'></i></div>
+            <div class="tab-text"><strong>Web Applications</strong><span>Responsive & Interactive</span></div>
+          </button>
+          <button class="service-tab" data-target="tab-saas">
+            <div class="tab-icon"><i class='bx bx-cloud'></i></div>
+            <div class="tab-text"><strong>SaaS Solutions</strong><span>Scalable infrastructure</span></div>
+          </button>
+          <button class="service-tab" data-target="tab-custom">
+            <div class="tab-icon"><i class='bx bx-code-block'></i></div>
+            <div class="tab-text"><strong>Custom Software</strong><span>Unique requirements</span></div>
+          </button>
+        </div>
+
+        <div class="service-panels">
+          <div id="tab-mobile" class="service-panel is-active">
+            <span class="eyebrow" style="margin-bottom: 0.5rem; display: block;">Anywhere, Anytime</span>
+            <h3 style="font-size: var(--fs-h3);">Mobile Applications</h3>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Turn your idea into an application people can access wherever they go. We develop modern mobile applications designed around usability, performance, and scalability.</p>
+            <ul class="service-list">
+              <li>Business applications</li>
+              <li>Customer-facing apps</li>
+              <li>Startup MVPs</li>
+              <li>Cross-platform solutions</li>
+            </ul>
+          </div>
+          <div id="tab-web" class="service-panel">
+            <span class="eyebrow" style="margin-bottom: 0.5rem; display: block;">Beyond Static</span>
+            <h3 style="font-size: var(--fs-h3);">Web Applications</h3>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Powerful web applications that go beyond static websites. We develop platforms that allow businesses to manage operations, serve customers, and automate processes.</p>
+            <ul class="service-list">
+              <li>Business management systems</li>
+              <li>Customer portals & Dashboards</li>
+              <li>Booking platforms & E-commerce</li>
+              <li>Data-driven custom platforms</li>
+            </ul>
+          </div>
+          <div id="tab-saas" class="service-panel">
+            <span class="eyebrow" style="margin-bottom: 0.5rem; display: block;">Software as a Service</span>
+            <h3 style="font-size: var(--fs-h3);">SaaS Platforms</h3>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Access powerful software without the complexity of managing infrastructure. From concept to deployment, we turn your idea into a scalable product.</p>
+            <ul class="service-list">
+              <li>Multi-user & Subscription systems</li>
+              <li>Cloud-based applications</li>
+              <li>Automated workflows & Admin dashboards</li>
+              <li>Scalable backend & API integrations</li>
+            </ul>
+          </div>
+          <div id="tab-custom" class="service-panel">
+            <span class="eyebrow" style="margin-bottom: 0.5rem; display: block;">Tailor-Made</span>
+            <h3 style="font-size: var(--fs-h3);">Custom Software</h3>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">If existing software doesn't solve the problem, build something that does. We create custom software designed specifically around your unique requirements and goals.</p>
+            <ul class="service-list">
+              <li>Process automation</li>
+              <li>System connectivity</li>
+              <li>Complex data management</li>
+              <li>Entirely new digital products</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="section section--dark">
+    <div class="container">
+      <div class="section-head gsap-fade-up">
+        <span class="eyebrow">Our Solutions</span>
+        <h2>Technology that solves real-world problems.</h2>
+      </div>
+      
+      <div class="projects-grid gsap-stagger-grid">
+        <!-- Rapid Care -->
+        <div class="project-card">
+          <div class="project-content">
+            <span class="eyebrow" style="margin-bottom: 0.5rem; display: block;">Health Tech</span>
+            <h3 style="margin-block: 1rem; font-size: var(--fs-h3);">Rapid Care</h3>
+            <p style="color: var(--text-secondary);">Technology designed to make care more accessible. A digital platform that connects technology with the delivery and management of care-related services, simplifying processes for users and providers.</p>
+            <div class="btn-row" style="margin-top: 2rem;">
+              <a href="#" class="btn btn--ghost">Explore Rapid Care</a>
+            </div>
+          </div>
+          <div class="project-media">
+             <div style="width: 100%; max-width: 300px; border: 1px solid var(--border-hair); padding: 1.5rem; background: var(--void);">
+                <div style="width: 40%; height: 8px; background: var(--border-strong); margin-bottom: 2rem;"></div>
+                <div style="width: 100%; height: 60px; border: 1px solid var(--border-hair); margin-bottom: 1rem;"></div>
+                <div style="display: flex; gap: 1rem;">
+                  <div style="flex: 1; height: 120px; border: 1px solid var(--border-hair);"></div>
+                  <div style="flex: 1; height: 120px; border: 1px solid var(--border-hair);"></div>
+                </div>
+             </div>
+          </div>
+        </div>
+
+        <!-- Ngobe Exault -->
+        <div class="project-card">
+          <div class="project-content">
+            <span class="eyebrow" style="margin-bottom: 0.5rem; display: block;">Innovation Platform</span>
+            <h3 style="margin-block: 1rem; font-size: var(--fs-h3);">Ngobe Exault</h3>
+            <p style="color: var(--text-secondary);">Building digital solutions with ambition. Combining technology, usability, and innovation to address practical needs and create new opportunities with a strong technological foundation.</p>
+            <div class="btn-row" style="margin-top: 2rem;">
+              <a href="https://www.ngobeexalt.com/" target="_blank" class="btn btn--ghost">Discover Ngobe Exault</a>
+            </div>
+          </div>
+          <div class="project-media">
+             <div style="width: 100%; max-width: 300px; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="height: 200px; border: 1px solid var(--border-hair); background: var(--void);"></div>
+                <div style="height: 200px; border: 1px solid var(--border-hair); background: var(--void); display: flex; flex-direction: column; justify-content: flex-end; padding: 1rem;">
+                    <div style="width: 100%; height: 40px; background: var(--border-hair);"></div>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who We Serve -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head gsap-fade-up">
+        <span class="eyebrow">Who We Serve</span>
+        <h2>From individual ideas to enterprise solutions.</h2>
+      </div>
+      <div class="audience-scroller gsap-stagger-grid">
+        <div class="card audience-card">
+          <i class='bx bx-user'></i>
+          <h3>Individuals</h3>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">Turn concepts into digital products.</p>
+        </div>
+        <div class="card audience-card">
+          <i class='bx bx-rocket'></i>
+          <h3>Startups</h3>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">Move from idea to scalable MVP.</p>
+        </div>
+        <div class="card audience-card">
+          <i class='bx bx-store-alt'></i>
+          <h3>Small Business</h3>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">Automate repetitive processes.</p>
+        </div>
+        <div class="card audience-card">
+          <i class='bx bx-buildings'></i>
+          <h3>Enterprise</h3>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">Custom internal platforms.</p>
+        </div>
+        <div class="card audience-card">
+          <i class='bx bx-globe'></i>
+          <h3>Organizations</h3>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">Support digital transformation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Approach -->
+  <section id="approach" class="section section--dark">
+    <div class="container">
+      <div class="section-head gsap-fade-up">
+        <span class="eyebrow">Development Approach</span>
+        <h2>From idea to implementation.</h2>
+        <p>We believe good software starts with understanding the problem.</p>
+      </div>
+      <div class="process-list gsap-stagger-grid">
+        <div class="process-item">
+          <div class="process-num">01</div>
+          <div><h3 style="font-size: 1.2rem;">Discover</h3><p style="color: var(--text-secondary);">We start by understanding your idea, business, users, challenges, and objectives.</p></div>
+        </div>
+        <div class="process-item">
+          <div class="process-num">02</div>
+          <div><h3 style="font-size: 1.2rem;">Plan</h3><p style="color: var(--text-secondary);">We translate your requirements into a practical technical strategy and architecture.</p></div>
+        </div>
+        <div class="process-item">
+          <div class="process-num">03</div>
+          <div><h3 style="font-size: 1.2rem;">Design</h3><p style="color: var(--text-secondary);">We design intuitive user experiences and interfaces making the software easy to use.</p></div>
+        </div>
+        <div class="process-item">
+          <div class="process-num">04</div>
+          <div><h3 style="font-size: 1.2rem;">Build</h3><p style="color: var(--text-secondary);">Our team turns the design into a functional, tested software product.</p></div>
+        </div>
+        <div class="process-item">
+          <div class="process-num">05</div>
+          <div><h3 style="font-size: 1.2rem;">Test & Launch</h3><p style="color: var(--text-secondary);">We test functionality before deployment, ensuring readiness for real-world users.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head center gsap-fade-up">
+        <h2>Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-list gsap-stagger-grid">
+        <div class="faq-item">
+          <button class="faq-question">What types of software does MSTR develop? <span class="plus">+</span></button>
+          <div class="faq-answer"><p>We develop custom mobile applications, web applications, SaaS platforms, business systems, APIs, and other software solutions based on individual project requirements.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can you build an application from an idea? <span class="plus">+</span></button>
+          <div class="faq-answer"><p>Yes. You don't need to have technical knowledge or a finished specification. We can help transform your idea into requirements, a development plan, and eventually a working product.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Do you work with small businesses? <span class="plus">+</span></button>
+          <div class="faq-answer"><p>Absolutely. Our services are designed for individuals, startups, small businesses, and larger organizations.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">How much does software development cost? <span class="plus">+</span></button>
+          <div class="faq-answer"><p>There is no single price because every project is different. Costs depend on factors such as functionality, complexity, and development time. We prefer to understand the project first and provide an appropriate proposal.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+<!-- Final CTA -->
+  <section id="contact" class="section section--tight">
+    <div class="container">
+      <div class="gsap-fade-up" style="text-align: center; border: 1px solid var(--border-hair); padding: var(--space-2xl) var(--space-md); background: var(--bg-raised);">
+        <h2 style="font-size: var(--fs-h2);">Let's Build Something.</h2>
+        <p style="margin: 1rem auto; max-width: 600px; color: var(--text-secondary); font-size: var(--fs-body-lg);">
+          "There has to be a better way to do this." That's where MSTR comes in. Let's turn your idea into something real.
+        </p>
+        <div class="btn-row" style="justify-content: center; margin-top: 2.5rem;">
+          <a href="mailto:admin@mstrsoftwaresolutions.co.za?subject=I%20want%20to%20start%20a%20project" class="btn btn--primary">Start a Project</a>
+          <a href="https://wa.me/27718163210" target="_blank" rel="noopener noreferrer" class="btn btn--ghost">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="#" class="brand" style="margin-bottom: 1.5rem;">
+            <img src="images/mstr-logo.png" alt="MSTR Logo" style="height: 30px;">
+            <div class="brand-full"><span>MSTR</span></div>
+          </a>
+          <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 250px;">
+            Endless solutions. Driven by Innovation. Built by Four.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#">Software Development</a></li>
+            <li><a href="#">Mobile Applications</a></li>
+            <li><a href="#">Web Applications</a></li>
+            <li><a href="#">SaaS Development</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our Approach</a></li>
+            <li><a href="#">Our Values</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Projects</h4>
+          <ul>
+            <li><a href="#">Rapid Care</a></li>
+            <li><a href="#">Ngobe Exault</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="border-top: 1px solid var(--border-hair); padding-top: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; color: var(--text-muted); font-size: 0.85rem; font-family: var(--font-mono);">
+        <p>© 2026 MSTR Software Solutions. All Rights Reserved.</p>
+        <p>Built by Four. Driven by Innovation.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts (Tabs, Accordion, Video Control, GSAP) -->
+  <script>
+    // Header Scroll Effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('is-scrolled');
+      } else {
+        header.classList.remove('is-scrolled');
+      }
+    });
+
+    // Play/Pause Video
+    const video = document.getElementById('heroVideo');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    
+    playPauseBtn.addEventListener('click', () => {
+      if (video.paused) {
+        video.play();
+        playPauseBtn.innerHTML = "<i class='bx bx-pause'></i>";
+      } else {
+        video.pause();
+        playPauseBtn.innerHTML = "<i class='bx bx-play'></i>";
+      }
+    });
+
+    // Services Tabs
+    const tabs = document.querySelectorAll('.service-tab');
+    const panels = document.querySelectorAll('.service-panel');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('is-active'));
+        panels.forEach(p => p.classList.remove('is-active'));
+        
+        tab.classList.add('is-active');
+        
+        const targetPanel = document.getElementById(tab.dataset.target);
+        targetPanel.classList.add('is-active');
+        gsap.fromTo(targetPanel, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 });
+      });
+    });
+
+    // FAQ Accordion
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      const btn = item.querySelector('.faq-question');
+      btn.addEventListener('click', () => {
+        const isOpen = item.classList.contains('is-open');
+        faqItems.forEach(faq => faq.classList.remove('is-open'));
+        if (!isOpen) {
+          item.classList.add('is-open');
+        }
+      });
+    });
+
+    // GSAP Animations Fixed (Using fromTo and handling visibility)
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.set('.gsap-hero-el > *, .gsap-hero-el', { visibility: 'visible' });
+    gsap.set('.gsap-fade-up > *', { visibility: 'visible' });
+    
+    // 1. Hero Entrance Animation
+    gsap.fromTo(".gsap-hero-el", 
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out", delay: 0.2 }
+    );
+
+    // 2. Scroll Animations for Section Headers and individual elements
+    gsap.utils.toArray('.gsap-fade-up').forEach(element => {
+      gsap.set(element.children, { visibility: 'visible' });
+      gsap.fromTo(element.children, 
+        { y: 40, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: element,
+            start: "top 85%",
+          },
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "power2.out"
+        }
+      );
+    });
+
+    // 3. Scroll Animations for Staggered Grids/Cards
+    gsap.utils.toArray('.gsap-stagger-grid').forEach(grid => {
+      gsap.set(grid.children, { visibility: 'visible' });
+      gsap.fromTo(grid.children, 
+        { y: 40, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: grid,
+            start: "top 85%",
+          },
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "power2.out"
+        }
+      );
+    });
+  </script>
+</body>
+</html>
