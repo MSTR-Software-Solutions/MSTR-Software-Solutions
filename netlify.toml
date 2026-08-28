@@ -1,0 +1,71 @@
+# MSTR Software Solutions - Netlify configuration
+#
+# The site is served as-is: no build command, no build output directory beyond
+# the repo root. Everything below is headers and caching.
+
+[build]
+  publish = "."
+
+# ---------------------------------------------------------------------------
+# Security headers, applied to every response.
+#
+# The CSP allows exactly the three third parties the page uses:
+#   fonts.googleapis.com / fonts.gstatic.com  - Google Fonts
+#   unpkg.com                                 - Boxicons CSS and its icon font
+#   cdnjs.cloudflare.com                      - GSAP and ScrollTrigger
+#
+# 'unsafe-inline' is required for both scripts and styles: the whole design
+# system and all behaviour live in inline blocks in index.html, and a static
+# host cannot issue per-request nonces. Hashes were considered and rejected -
+# they would have to be recalculated by hand on every edit to index.html,
+# which is a trap on a repo whose entire workflow is "edit the file".
+# ---------------------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), camera=(), microphone=(), payment=(), usb=()"
+    Content-Security-Policy = """
+      default-src 'self'; \
+      base-uri 'self'; \
+      object-src 'none'; \
+      frame-ancestors 'none'; \
+      form-action 'self'; \
+      script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; \
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; \
+      font-src 'self' data: https://fonts.gstatic.com https://unpkg.com; \
+      img-src 'self' data:; \
+      media-src 'self'; \
+      connect-src 'self'"""
+
+# ---------------------------------------------------------------------------
+# Caching.
+#
+# Asset filenames are not content-hashed, so "immutable" would strand returning
+# visitors on a stale logo or video until the max-age expired. 30 days is long
+# enough to matter and short enough to recover from. If asset hashing is ever
+# added, these can safely go to a year with immutable.
+# ---------------------------------------------------------------------------
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/video/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+# The single page must always be revalidated, or a deploy does not reach anyone.
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

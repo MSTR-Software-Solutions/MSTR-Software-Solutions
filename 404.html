@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found | MSTR Software Solutions</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#03050E">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/images/favicon-64.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* Deliberately self-contained: an error page should not depend on anything
+       that might be the reason the visitor is seeing an error page. */
+    :root {
+      --void: #03050E;
+      --electric: #0091FF;
+      --electric-soft: #4FB8FF;
+      --electric-deep: #0072E0;
+      --electric-deeper: #0068CC;
+      --border-hair: rgba(110, 175, 255, 0.18);
+      --border-strong: rgba(0, 145, 255, 0.60);
+      --surface-strong: rgba(90, 170, 255, 0.09);
+      --text-secondary: #BCCBE6;
+      --text-muted: #8195B8;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.25rem;
+      background: var(--void);
+      color: #fff;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* the same lit-from-within feel as the hero, without the video */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(60% 50% at 50% 40%, rgba(0, 145, 255, 0.13), transparent 70%);
+    }
+    main { position: relative; z-index: 1; max-width: 620px; text-align: center; }
+    img { display: block; width: 64px; height: auto; margin: 0 auto 2rem; }
+    .code {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.85rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--electric-soft);
+    }
+    h1 {
+      margin: 0.75rem 0 0;
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      font-weight: 500; line-height: 1.08; letter-spacing: -0.02em;
+      font-size: clamp(2.3rem, 1.9rem + 2vw, 3.4rem);
+    }
+    p { margin: 1.25rem 0 0; color: var(--text-secondary); }
+    .actions { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2.5rem; }
+    a.btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0.8rem 1.6rem;
+      font-size: 0.9rem; font-weight: 500; text-decoration: none;
+      transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn--primary {
+      background: linear-gradient(135deg, var(--electric-deeper) 0%, var(--electric-deep) 100%);
+      color: #fff;
+      box-shadow: 0 0 0 1px rgba(0, 145, 255, 0.55), 0 6px 20px -6px rgba(0, 145, 255, 0.45);
+    }
+    .btn--primary:hover {
+      background: linear-gradient(135deg, var(--electric-deep) 0%, var(--electric-deeper) 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px rgba(79, 184, 255, 0.85), 0 10px 28px -6px rgba(0, 145, 255, 0.45);
+    }
+    .btn--ghost { border: 1px solid var(--border-hair); color: #fff; }
+    .btn--ghost:hover { border-color: var(--border-strong); background: var(--surface-strong); color: var(--electric-soft); transform: translateY(-2px); }
+    .sig { margin-top: 3rem; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-muted); }
+    :focus-visible { outline: 2px solid var(--electric-soft); outline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="/images/favicon-64.png" alt="MSTR Software Solutions logo" width="64" height="70">
+    <span class="code">Error 404</span>
+    <h1>This page doesn't exist.</h1>
+    <p>
+      The link may be out of date, or the address slightly off. Everything we do
+      lives on the one page &mdash; head back and you'll find it.
+    </p>
+    <div class="actions">
+      <a class="btn btn--primary" href="/">Back to the site</a>
+      <a class="btn btn--ghost" href="/#contact">Get in touch</a>
+    </div>
+    <p class="sig">Endless solutions. Driven by innovation. Built by Four.</p>
+  </main>
+</body>
+</html>
