@@ -41,6 +41,10 @@
       --white: #FFFFFF;
       --electric: #0091FF;
       --electric-soft: #4FB8FF;
+      /* Button fill only. The vivid --electric stays on the border and glow;
+         white text needs <=0.183 relative luminance to clear WCAG AA. */
+      --electric-deep: #0072E0;
+      --electric-deeper: #0068CC;
       --cyan: #22D3EE;
       --electric-glow: rgba(0, 145, 255, 0.45);
 
@@ -138,6 +142,17 @@
     .section-head h2 { font-size: var(--fs-h2); margin-top: var(--space-sm); }
     .section-head p { margin-top: var(--space-md); font-size: var(--fs-body-lg); color: var(--text-secondary); }
 
+    /* Section kicker. Same treatment as .footer-col h4 and the form labels. */
+    .eyebrow {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: var(--fs-eyebrow);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--electric-soft);
+    }
+
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2xs);
       font-weight: 500; padding: 0.8rem 1.6rem;
@@ -145,14 +160,16 @@
       font-family: var(--font-body); font-size: 0.9rem;
     }
     .btn--primary {
-      background: linear-gradient(135deg, var(--electric) 0%, #3AA9FF 100%);
+      background: linear-gradient(135deg, var(--electric-deeper) 0%, var(--electric-deep) 100%);
       color: #fff;
-      box-shadow: 0 0 0 1px rgba(0, 145, 255, 0.5), 0 6px 20px -6px var(--electric-glow);
+      box-shadow: 0 0 0 1px rgba(0, 145, 255, 0.55), 0 6px 20px -6px var(--electric-glow);
     }
     .btn--primary:hover {
-      background: linear-gradient(135deg, #23A0FF 0%, var(--electric-soft) 100%);
+      /* Lift comes from the ring and glow, not the fill - brightening the fill
+         would push the white label back below 4.5:1. */
+      background: linear-gradient(135deg, var(--electric-deep) 0%, var(--electric-deeper) 100%);
       transform: translateY(-2px);
-      box-shadow: 0 0 0 1px rgba(79, 184, 255, 0.6), 0 10px 28px -6px var(--electric-glow);
+      box-shadow: 0 0 0 1px rgba(79, 184, 255, 0.85), 0 10px 28px -6px var(--electric-glow);
     }
     .btn--ghost {
       background: transparent; border: 1px solid var(--border-hair); color: var(--white);
