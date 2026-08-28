@@ -26,7 +26,8 @@ Open it, edit it, refresh. That is the whole workflow.
 │   ├── favicon-64.png        # browser tab, and the 404 page's mark
 │   ├── apple-touch-icon.png  # 180x180 on the brand ground (iOS)
 │   ├── mstr-logo.png         # header and footer lockup, 73x80
-│   ├── hero-poster.jpg       # hero still, and the hero itself on mobile
+│   ├── hero-poster.jpg       # landscape hero still, shown before the clip plays
+│   ├── hero-poster-portrait.jpg  # the hero itself on portrait viewports
 │   ├── og-card.png           # 1200x630 social share card
 │   └── source/
 │       └── mstr-mark-master.png   # 473x521 master. Not served. Regenerate from this.
@@ -146,11 +147,25 @@ selectors, or it will be invisible whenever GSAP is.
 
 ### Breakpoints
 
-| Width | What changes |
+| Condition | What changes |
 |---|---|
 | ≤1024px | desktop nav is replaced by the hamburger and drawer |
 | ≤900px | services, projects, contact and footer grids collapse to one column |
-| ≤600px | hero switches to `100dvh`; the background video is not downloaded |
+| ≤600px | hero switches to `100dvh`; the header's Contact CTA drops (it is in the drawer) |
+| aspect ratio ≤ 1:1 | portrait hero treatment — see below |
+
+**Portrait viewports get a different hero entirely.** The clip is 16:9; covering a tall
+viewport with it scales the frame roughly 3x, which pushes the logo past the crop and
+drops the clip's own "Software Solutions" lockup on top of the headline. No
+`object-position` fixes that — the composition is landscape. So portrait hides the
+`<video>` and paints `images/hero-poster-portrait.jpg` on `.hero` instead: the mark in
+the upper third, fading to flat `--void` where the copy sits.
+
+**The JS gate must mirror that media query.** If they drift, the page downloads a clip it
+is not going to render.
+
+Regenerate the portrait image after any change to the clip — it is composed from the
+same 6s frame, darkened to 55% with an alpha ramp top and bottom.
 
 ---
 
@@ -161,11 +176,15 @@ The hero clip is the heaviest asset on the site, so it is **not** in the markup.
 attached by script only when all of these hold:
 
 - viewport is wider than 600px
+- **viewport is not portrait** (`min-aspect-ratio: 1/1`) — see [Breakpoints](#breakpoints)
 - `prefers-reduced-motion` is not set
 - `navigator.connection` reports neither `saveData` nor a 2g `effectiveType`
 
-Otherwise the poster *is* the hero, and the existing play button lets the visitor opt in.
-That button is also the recovery path if a browser refuses programmatic playback.
+Otherwise a poster *is* the hero. In landscape that is `hero-poster.jpg` on the `<video>`
+itself, and the play button lets the visitor opt in — that button is also the recovery
+path if a browser refuses programmatic playback. In portrait the `<video>` is not
+rendered at all and `.hero` paints `hero-poster-portrait.jpg`, so the control is hidden
+too: there is nothing for it to play.
 
 Re-encoding, if the source clip ever changes:
 
