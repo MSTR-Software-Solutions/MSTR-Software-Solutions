@@ -18,11 +18,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Boxicons (Vector Icons) -->
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-  <!-- GSAP for Animations -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <!-- GSAP for Animations. Deferred: it is only needed once the DOM exists, and
+       nothing on the critical render path depends on it. -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
   <style>
     /* ==========================================================================
@@ -522,14 +525,26 @@
     .form-status-link { color: var(--electric-soft); text-decoration: underline; }
     .form-status-link:hover { color: var(--white); }
 
-    /* Visibility Helpers */
+    /* Visibility Helpers
+       Animated content starts hidden so GSAP can reveal it. GSAP is a third-party
+       CDN script, so it is treated as optional - three escape hatches guarantee
+       the content is never left hidden: .no-anim (set by script when GSAP did not
+       load), the reduced-motion query, and the <noscript> block in <head>. */
     .gsap-fade-up, .gsap-stagger-grid > * {
-      visibility: hidden; 
+      visibility: hidden;
     }
-    .no-js .gsap-fade-up, .no-js .gsap-stagger-grid > * {
+    .no-anim .gsap-fade-up,
+    .no-anim .gsap-stagger-grid > * {
       visibility: visible;
       opacity: 1;
       transform: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .gsap-fade-up, .gsap-stagger-grid > * {
+        visibility: visible;
+        opacity: 1;
+        transform: none;
+      }
     }
 
     @media (max-width: 1024px) {
@@ -576,9 +591,15 @@
     }
     
   </style>
+
+  <noscript>
+    <style>
+      .gsap-fade-up,
+      .gsap-stagger-grid > * { visibility: visible !important; opacity: 1 !important; transform: none !important; }
+    </style>
+  </noscript>
 </head>
 <body>
-  <script>document.body.classList.remove('no-js');</script>
 
   <!-- Header -->
   <header class="site-header" id="header">
@@ -1107,7 +1128,7 @@
         
         const targetPanel = document.getElementById(tab.dataset.target);
         targetPanel.classList.add('is-active');
-        gsap.fromTo(targetPanel, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 });
+        if (window.gsap) gsap.fromTo(targetPanel, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 });
       });
     });
 
@@ -1149,8 +1170,7 @@
           'Service: ' + get('Service'),
           '',
           get('Message')
-        ].join('
-');
+        ].join('\n');
         const href = 'mailto:' + CONTACT_EMAIL +
           '?subject=' + encodeURIComponent('Enquiry - ' + (get('Service') || 'General Enquiry')) +
           '&body=' + encodeURIComponent(body);
@@ -1236,54 +1256,67 @@
       }
     }
 
-    // GSAP Animations Fixed (Using fromTo and handling visibility)
-    gsap.registerPlugin(ScrollTrigger);
+    // Animation layer.
+    // GSAP is deferred and comes from a CDN, so this waits for it and treats it as
+    // optional. If it never arrived - outage, ad blocker, proxy, offline - or the
+    // visitor asked for reduced motion, reveal everything and skip the tweens
+    // rather than leaving most of the page at visibility: hidden.
+    document.addEventListener('DOMContentLoaded', () => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    gsap.set('.gsap-hero-el > *, .gsap-hero-el', { visibility: 'visible' });
-    gsap.set('.gsap-fade-up > *', { visibility: 'visible' });
+      if (!window.gsap || !window.ScrollTrigger || reduceMotion) {
+        document.documentElement.classList.add('no-anim');
+        return;
+      }
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.set('.gsap-hero-el > *, .gsap-hero-el', { visibility: 'visible' });
+      gsap.set('.gsap-fade-up > *', { visibility: 'visible' });
     
-    // 1. Hero Entrance Animation
-    gsap.fromTo(".gsap-hero-el", 
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out", delay: 0.2 }
-    );
-
-    // 2. Scroll Animations for Section Headers and individual elements
-    gsap.utils.toArray('.gsap-fade-up').forEach(element => {
-      gsap.set(element.children, { visibility: 'visible' });
-      gsap.fromTo(element.children, 
-        { y: 40, opacity: 0 },
-        {
-          scrollTrigger: {
-            trigger: element,
-            start: "top 85%",
-          },
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power2.out"
-        }
+      // 1. Hero Entrance Animation
+      gsap.fromTo(".gsap-hero-el", 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out", delay: 0.2 }
       );
-    });
 
-    // 3. Scroll Animations for Staggered Grids/Cards
-    gsap.utils.toArray('.gsap-stagger-grid').forEach(grid => {
-      gsap.set(grid.children, { visibility: 'visible' });
-      gsap.fromTo(grid.children, 
-        { y: 40, opacity: 0 },
-        {
-          scrollTrigger: {
-            trigger: grid,
-            start: "top 85%",
-          },
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power2.out"
-        }
-      );
+      // 2. Scroll Animations for Section Headers and individual elements
+      gsap.utils.toArray('.gsap-fade-up').forEach(element => {
+        gsap.set(element.children, { visibility: 'visible' });
+        gsap.fromTo(element.children, 
+          { y: 40, opacity: 0 },
+          {
+            scrollTrigger: {
+              trigger: element,
+              start: "top 85%",
+            },
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power2.out"
+          }
+        );
+      });
+
+      // 3. Scroll Animations for Staggered Grids/Cards
+      gsap.utils.toArray('.gsap-stagger-grid').forEach(grid => {
+        gsap.set(grid.children, { visibility: 'visible' });
+        gsap.fromTo(grid.children, 
+          { y: 40, opacity: 0 },
+          {
+            scrollTrigger: {
+              trigger: grid,
+              start: "top 85%",
+            },
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power2.out"
+          }
+        );
+      });
     });
   </script>
 </body>
