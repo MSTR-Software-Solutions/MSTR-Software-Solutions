@@ -1,0 +1,16 @@
+# OS metadata
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Tooling / deploy
+node_modules/
+.netlify/
+.env
+.env.*
