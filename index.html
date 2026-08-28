@@ -647,8 +647,16 @@
     }
 
     @media (max-width: 900px) {
-      .services-shell, .projects-grid, .footer-grid { grid-template-columns: 1fr; }
-      .service-tabs { border-bottom: none; }
+      .projects-grid, .footer-grid { grid-template-columns: 1fr; }
+      /* minmax(0, 1fr) rather than 1fr: a bare 1fr track has min-width auto, so
+         the panel's padding plus the two-column list forced the shell wider than
+         its container and the right edge was clipped by body{overflow-x:hidden}. */
+      .services-shell { grid-template-columns: minmax(0, 1fr); }
+      .service-tabs { border-bottom: none; position: static; }
+      .service-panels { min-height: 0; padding: var(--space-lg) var(--space-md); }
+      .service-list { grid-template-columns: 1fr; }
+      .project-media { padding: var(--space-lg) var(--space-md); }
+      .project-content { padding: var(--space-lg) var(--space-md); }
       .project-card, .project-card:nth-child(even) { grid-template-columns: 1fr; }
       .project-content { border-right: none; border-bottom: 1px solid var(--border-hair); }
       .project-card:nth-child(even) .project-content { order: -1; border-left: none; border-bottom: 1px solid var(--border-hair); }
@@ -658,6 +666,22 @@
       .audience-card { border-bottom: 1px solid var(--border-hair); }
       .audience-card:nth-child(even) { border-right: none; }
     }
+    /* Portrait viewports.
+       The hero clip is 16:9. Covering a tall viewport with it scales the frame
+       about 3x, which blows the logo up past the crop and drops the clip's own
+       "Software Solutions" lockup straight on top of the headline. No amount of
+       object-position fixes that - the composition is landscape.
+       So portrait gets a composition built for it: the mark in the upper third,
+       fading to flat --void where the copy sits. The video is not rendered and
+       not downloaded, and the play control has nothing to control. */
+    @media (max-aspect-ratio: 1/1) {
+      .hero {
+        background: var(--void) url("images/hero-poster-portrait.jpg") center top / cover no-repeat;
+      }
+      .hero-bg-video,
+      .hero-controls-wrapper { display: none; }
+    }
+
 @media (max-width: 600px) {
       /* Adjust the hero container to perfectly fit mobile screens */
       .hero {
@@ -677,6 +701,12 @@
       .contact-aside, .contact-form { padding: var(--space-lg) var(--space-md); }
       .audience-scroller { grid-template-columns: 1fr; }
       .audience-card { border-right: none; }
+      /* Contact lives in the drawer at this width; two CTAs plus the hamburger
+         crowd the bar on a 360px phone. */
+      .nav-cta { display: none; }
+      .nav-inner { grid-template-columns: 1fr auto; }
+      .section { padding-block: var(--space-2xl); }
+      .pillar-card { padding: var(--space-lg) var(--space-md); }
     }
     
   </style>
@@ -1315,6 +1345,9 @@
     const conn = navigator.connection || {};
     const autoplayWanted =
       window.matchMedia('(min-width: 601px)').matches &&
+      // must mirror the portrait rule in the stylesheet, or we would download a
+      // clip that is display:none
+      window.matchMedia('(min-aspect-ratio: 1/1)').matches &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
       !conn.saveData &&
       !/2g/.test(conn.effectiveType || '');
