@@ -386,6 +386,108 @@
     .footer-col h4 { margin-bottom: var(--space-sm); color: var(--white); font-family: var(--font-mono); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em; }
     .footer-col ul li { margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.95rem; }
 
+    /* ---- Contact Form ---- */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      border: 1px solid var(--border-hair);
+      background: var(--bg-raised);
+    }
+    .contact-aside {
+      padding: var(--space-xl) var(--space-lg);
+      border-right: 1px solid var(--border-hair);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--space-xl);
+    }
+    .contact-aside h2 { font-size: var(--fs-h3); margin-top: var(--space-sm); }
+    .contact-aside .lead { margin-top: var(--space-md); color: var(--text-secondary); font-size: var(--fs-body-lg); }
+    .contact-direct { display: flex; flex-direction: column; }
+    .contact-direct a {
+      display: flex; align-items: center; gap: var(--space-sm);
+      padding: var(--space-sm) 0;
+      border-top: 1px solid var(--border-hair);
+      color: var(--text-secondary); font-size: 0.95rem;
+      word-break: break-word;
+      transition: color var(--dur-fast) var(--ease-standard);
+    }
+    .contact-direct a:hover { color: var(--electric-soft); }
+    .contact-direct i { font-size: 1.3rem; color: var(--electric-soft); flex-shrink: 0; }
+
+    .contact-form { padding: var(--space-xl) var(--space-lg); }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); }
+    .form-field { display: flex; flex-direction: column; gap: var(--space-3xs); min-width: 0; }
+    .form-field--full { grid-column: 1 / -1; }
+    .form-field label {
+      font-family: var(--font-mono); font-size: 0.72rem;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+    .form-field label .req { color: var(--electric-soft); }
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border-hair);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      appearance: none;
+      transition: border-color var(--dur-fast) var(--ease-standard),
+                  background var(--dur-fast) var(--ease-standard);
+    }
+    .form-field textarea { resize: vertical; min-height: 150px; }
+    .form-field input::placeholder,
+    .form-field textarea::placeholder { color: var(--text-muted); }
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      outline: none;
+      border-color: var(--border-strong);
+      background: var(--surface-strong);
+    }
+    .form-field select {
+      cursor: pointer; padding-right: 2.5rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236B7B99' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+    }
+    .form-field select option { background: var(--deep); color: var(--text-primary); }
+    .form-field.has-error input,
+    .form-field.has-error select,
+    .form-field.has-error textarea { border-color: #E5484D; }
+    .field-error {
+      display: none; font-family: var(--font-mono);
+      font-size: 0.72rem; color: #FF8A8D; padding-top: 0.15rem;
+    }
+    .form-field.has-error .field-error { display: block; }
+
+    /* Honeypot — hidden from humans, visible to bots */
+    .form-honey { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+    .form-foot {
+      display: flex; align-items: center; flex-wrap: wrap;
+      gap: var(--space-md); margin-top: var(--space-lg);
+    }
+    .form-note { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
+    .btn[disabled] { opacity: 0.5; pointer-events: none; }
+
+    .form-status {
+      display: none; margin-top: var(--space-md);
+      padding: var(--space-sm) var(--space-md);
+      border: 1px solid var(--border-hair); border-left-width: 2px;
+      font-size: 0.9rem; color: var(--text-secondary);
+      background: var(--surface);
+    }
+    .form-status.is-visible { display: block; }
+    .form-status.is-success { border-left-color: var(--electric); color: var(--text-primary); }
+    .form-status.is-error { border-left-color: #E5484D; }
+
     /* Visibility Helpers */
     .gsap-fade-up, .gsap-stagger-grid > * {
       visibility: hidden; 
@@ -412,6 +514,8 @@
       .project-card, .project-card:nth-child(even) { grid-template-columns: 1fr; }
       .project-content { border-right: none; border-bottom: 1px solid var(--border-hair); }
       .project-card:nth-child(even) .project-content { order: -1; border-left: none; border-bottom: 1px solid var(--border-hair); }
+      .contact-grid { grid-template-columns: 1fr; }
+      .contact-aside { border-right: none; border-bottom: 1px solid var(--border-hair); }
       .audience-scroller { grid-template-columns: repeat(2, 1fr); }
       .audience-card { border-bottom: 1px solid var(--border-hair); }
       .audience-card:nth-child(even) { border-right: none; }
@@ -431,6 +535,8 @@
 
       /* (Keep your other mobile styles below here...) */
       .line-cards-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .contact-aside, .contact-form { padding: var(--space-lg) var(--space-md); }
       .audience-scroller { grid-template-columns: 1fr; }
       .audience-card { border-right: none; }
     }
@@ -668,14 +774,14 @@
           </div>
         </div>
 
-        <!-- Ngobe Exault -->
+        <!-- Ngobe Exalt -->
         <div class="project-card">
           <div class="project-content">
             <span class="eyebrow" style="margin-bottom: 0.5rem; display: block;">Innovation Platform</span>
-            <h3 style="margin-block: 1rem; font-size: var(--fs-h3);">Ngobe Exault</h3>
+            <h3 style="margin-block: 1rem; font-size: var(--fs-h3);">Ngobe Exalt</h3>
             <p style="color: var(--text-secondary);">Building digital solutions with ambition. Combining technology, usability, and innovation to address practical needs and create new opportunities with a strong technological foundation.</p>
             <div class="btn-row" style="margin-top: 2rem;">
-              <a href="https://www.ngobeexalt.com/" target="_blank" class="btn btn--ghost">Discover Ngobe Exault</a>
+              <a href="https://www.ngobeexalt.com/" target="_blank" rel="noopener noreferrer" class="btn btn--ghost">Discover Ngobe Exalt</a>
             </div>
           </div>
           <div class="project-media">
@@ -788,19 +894,97 @@
     </div>
   </section>
 
-  <!-- Final CTA -->
-<!-- Final CTA -->
+  <!-- Contact -->
   <section id="contact" class="section section--tight">
     <div class="container">
-      <div class="gsap-fade-up" style="text-align: center; border: 1px solid var(--border-hair); padding: var(--space-2xl) var(--space-md); background: var(--bg-raised);">
-        <h2 style="font-size: var(--fs-h2);">Let's Build Something.</h2>
-        <p style="margin: 1rem auto; max-width: 600px; color: var(--text-secondary); font-size: var(--fs-body-lg);">
-          "There has to be a better way to do this." That's where MSTR comes in. Let's turn your idea into something real.
-        </p>
-        <div class="btn-row" style="justify-content: center; margin-top: 2.5rem;">
-          <a href="mailto:admin@mstrsoftwaresolutions.co.za?subject=I%20want%20to%20start%20a%20project" class="btn btn--primary">Start a Project</a>
-          <a href="https://wa.me/27718163210" target="_blank" rel="noopener noreferrer" class="btn btn--ghost">Contact Us</a>
+      <div class="gsap-fade-up">
+      <div class="contact-grid">
+
+        <!-- Left: intro + direct channels -->
+        <div class="contact-aside">
+          <div>
+            <span class="eyebrow">Get In Touch</span>
+            <h2>Let's Build Something.</h2>
+            <p class="lead">
+              "There has to be a better way to do this." That's where MSTR comes in.
+              Tell us about your idea and we'll get back to you.
+            </p>
+          </div>
+          <div class="contact-direct">
+            <a href="mailto:admin@mstrsoftwaresolutions.co.za">
+              <i class='bx bx-envelope'></i>
+              <span>admin@mstrsoftwaresolutions.co.za</span>
+            </a>
+            <a href="https://wa.me/27718163210" target="_blank" rel="noopener noreferrer">
+              <i class='bx bxl-whatsapp'></i>
+              <span>+27 71 816 3210</span>
+            </a>
+          </div>
         </div>
+
+        <!-- Right: enquiry form (delivers to admin@mstrsoftwaresolutions.co.za via FormSubmit) -->
+        <div class="contact-form">
+          <form id="contactForm" action="https://formsubmit.co/admin@mstrsoftwaresolutions.co.za" method="POST" novalidate>
+
+            <!-- FormSubmit configuration -->
+            <input type="hidden" name="_subject" value="New enquiry from mstrsoftwaresolutions.co.za">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://mstrsoftwaresolutions.co.za/?sent=1#contact">
+
+            <!-- Spam honeypot: bots fill this, humans never see it -->
+            <div class="form-honey" aria-hidden="true">
+              <label>Leave this field empty
+                <input type="text" name="_honey" tabindex="-1" autocomplete="off">
+              </label>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="cf-name">Name <span class="req">*</span></label>
+                <input type="text" id="cf-name" name="Name" placeholder="Your full name" autocomplete="name" required>
+                <span class="field-error" data-error-for="cf-name">Please enter your name.</span>
+              </div>
+
+              <div class="form-field">
+                <label for="cf-email">Email <span class="req">*</span></label>
+                <input type="email" id="cf-email" name="Email" placeholder="you@company.com" autocomplete="email" required>
+                <span class="field-error" data-error-for="cf-email">Please enter a valid email address.</span>
+              </div>
+
+              <div class="form-field">
+                <label for="cf-phone">Phone</label>
+                <input type="tel" id="cf-phone" name="Phone" placeholder="Optional" autocomplete="tel">
+              </div>
+
+              <div class="form-field">
+                <label for="cf-service">What do you need?</label>
+                <select id="cf-service" name="Service">
+                  <option value="General Enquiry">General enquiry</option>
+                  <option value="Mobile Application">Mobile application</option>
+                  <option value="Web Application">Web application</option>
+                  <option value="SaaS Platform">SaaS platform</option>
+                  <option value="Custom Software">Custom software</option>
+                </select>
+              </div>
+
+              <div class="form-field form-field--full">
+                <label for="cf-message">Message <span class="req">*</span></label>
+                <textarea id="cf-message" name="Message" placeholder="Tell us about your project — what you're trying to build, and where you're stuck." required></textarea>
+                <span class="field-error" data-error-for="cf-message">Please tell us a little about your project.</span>
+              </div>
+            </div>
+
+            <div class="form-foot">
+              <button type="submit" class="btn btn--primary" id="contactSubmit">Send Message</button>
+              <span class="form-note">We reply within one business day.</span>
+            </div>
+
+            <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+
+      </div>
       </div>
     </div>
   </section>
@@ -833,14 +1017,14 @@
             <li><a href="#">About Us</a></li>
             <li><a href="#">Our Approach</a></li>
             <li><a href="#">Our Values</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Projects</h4>
           <ul>
             <li><a href="#">Rapid Care</a></li>
-            <li><a href="#">Ngobe Exault</a></li>
+            <li><a href="#">Ngobe Exalt</a></li>
           </ul>
         </div>
       </div>
@@ -906,6 +1090,90 @@
         }
       });
     });
+
+    // Contact Form -> FormSubmit.co (delivers to admin@mstrsoftwaresolutions.co.za)
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+      const statusEl = document.getElementById('formStatus');
+      const submitBtn = document.getElementById('contactSubmit');
+      const AJAX_ENDPOINT = 'https://formsubmit.co/ajax/admin@mstrsoftwaresolutions.co.za';
+      const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      const setStatus = (message, kind) => {
+        statusEl.textContent = message;
+        statusEl.className = 'form-status is-visible ' + (kind === 'success' ? 'is-success' : 'is-error');
+      };
+
+      const clearStatus = () => { statusEl.className = 'form-status'; statusEl.textContent = ''; };
+
+      const markField = (input, isValid) => {
+        input.closest('.form-field').classList.toggle('has-error', !isValid);
+        return isValid;
+      };
+
+      const validate = () => {
+        const name = contactForm.elements['Name'];
+        const email = contactForm.elements['Email'];
+        const message = contactForm.elements['Message'];
+
+        // Evaluate every field first so all errors surface at once.
+        const results = [
+          markField(name, name.value.trim().length > 1),
+          markField(email, EMAIL_RE.test(email.value.trim())),
+          markField(message, message.value.trim().length > 4)
+        ];
+
+        const firstBad = results.indexOf(false);
+        if (firstBad !== -1) [name, email, message][firstBad].focus();
+        return results.every(Boolean);
+      };
+
+      // Clear a field's error as soon as the visitor starts fixing it.
+      contactForm.querySelectorAll('input, textarea').forEach(field => {
+        field.addEventListener('input', () => field.closest('.form-field').classList.remove('has-error'));
+      });
+
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearStatus();
+        if (!validate()) return;
+
+        const payload = {};
+        new FormData(contactForm).forEach((value, key) => { payload[key] = value; });
+
+        submitBtn.disabled = true;
+        const originalLabel = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+
+        try {
+          const res = await fetch(AJAX_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json().catch(() => ({}));
+
+          if (res.ok && String(data.success) === 'true') {
+            contactForm.reset();
+            setStatus("Thanks — your message is on its way. We'll be in touch shortly.", 'success');
+          } else {
+            setStatus(data.message || 'Something went wrong. Please email us directly at admin@mstrsoftwaresolutions.co.za.', 'error');
+          }
+        } catch (err) {
+          // Network/CORS failure: fall back to a normal POST so the message still gets through.
+          contactForm.submit();
+          return;
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalLabel;
+        }
+      });
+
+      // Success state for the no-JS fallback path (FormSubmit's _next redirect).
+      if (new URLSearchParams(window.location.search).get('sent') === '1') {
+        setStatus("Thanks — your message is on its way. We'll be in touch shortly.", 'success');
+      }
+    }
 
     // GSAP Animations Fixed (Using fromTo and handling visibility)
     gsap.registerPlugin(ScrollTrigger);
