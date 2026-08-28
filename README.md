@@ -5,6 +5,10 @@ mobile apps, web apps, SaaS platforms and custom business systems.
 
 **Live:** https://mstrsoftwaresolutions.co.za
 
+> **Thinking of contributing?** Read [CONTRIBUTING.md](CONTRIBUTING.md) first.
+> Changes need an approved issue **before** you write code — PRs opened without one
+> are closed unread.
+
 ---
 
 ## What this is
@@ -275,3 +279,11 @@ to a year with `immutable`.
 ## Known issues
 
 Tracked in [GitHub Issues](../../issues).
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Approval on an issue is required before any code
+is written, and the constraints listed there — no build step, no new third-party
+dependencies, the CSP allowlist, the GSAP-optional contract — are deliberate.
