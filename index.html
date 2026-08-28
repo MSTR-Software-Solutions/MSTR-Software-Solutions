@@ -31,23 +31,32 @@
 
     /* ---- Tokens ---- */
     :root {
-      --void: #050609;
-      --deep: #080816; 
-      --navy: #1A3560;
+      /* Same identity, purer hues. The blue was already S100 in HSL, so the
+         vibrancy comes from dropping the red channel (a truer azure), deepening
+         and blue-tinting the darks, and tinting surfaces/borders blue instead
+         of neutral white. */
+      --void: #03050E;
+      --deep: #070B1F;
+      --navy: #1E47A0;
       --white: #FFFFFF;
-      --electric: #1B8CFF;
-      --electric-soft: #5CAEFF;
+      --electric: #0091FF;
+      --electric-soft: #4FB8FF;
+      --cyan: #22D3EE;
+      --electric-glow: rgba(0, 145, 255, 0.45);
 
       --bg-base: var(--void);
-      --bg-raised: #080816;
-      --surface: rgba(255, 255, 255, 0.02);
-      --surface-strong: rgba(255, 255, 255, 0.05);
-      --border-hair: rgba(255, 255, 255, 0.12);
-      --border-strong: rgba(92, 174, 255, 0.35);
+      --bg-raised: #070B1F;
+      --surface: rgba(90, 170, 255, 0.04);
+      --surface-strong: rgba(90, 170, 255, 0.09);
+      --border-hair: rgba(110, 175, 255, 0.18);
+      --border-strong: rgba(0, 145, 255, 0.60);
 
       --text-primary: #FFFFFF;
-      --text-secondary: #A9B6CE;
-      --text-muted: #6B7B99;
+      --text-secondary: #BCCBE6;
+      --text-muted: #8195B8;
+
+      --danger: #FF4D52;
+      --danger-soft: #FF9096;
 
       --font-display: 'Space Grotesk', 'Inter', sans-serif;
       --font-body: 'Inter', 'Segoe UI', sans-serif;
@@ -136,14 +145,19 @@
       font-family: var(--font-body); font-size: 0.9rem;
     }
     .btn--primary {
-      background: var(--electric);
-      color: #fff; 
+      background: linear-gradient(135deg, var(--electric) 0%, #3AA9FF 100%);
+      color: #fff;
+      box-shadow: 0 0 0 1px rgba(0, 145, 255, 0.5), 0 6px 20px -6px var(--electric-glow);
     }
-    .btn--primary:hover { background: var(--electric-soft); transform: translateY(-2px); }
+    .btn--primary:hover {
+      background: linear-gradient(135deg, #23A0FF 0%, var(--electric-soft) 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px rgba(79, 184, 255, 0.6), 0 10px 28px -6px var(--electric-glow);
+    }
     .btn--ghost {
       background: transparent; border: 1px solid var(--border-hair); color: var(--white);
     }
-    .btn--ghost:hover { border-color: var(--border-strong); background: rgba(255,255,255,0.05); transform: translateY(-2px); }
+    .btn--ghost:hover { border-color: var(--border-strong); background: var(--surface-strong); color: var(--electric-soft); transform: translateY(-2px); }
 
     /* ---- Header ---- */
     .site-header {
@@ -152,7 +166,7 @@
       border-bottom: 1px solid transparent;
     }
     .site-header.is-scrolled {
-      padding-block: 1rem; background: rgba(5, 6, 9, 0.95);
+      padding-block: 1rem; background: rgba(3, 5, 14, 0.94);
       backdrop-filter: blur(16px); border-bottom-color: var(--border-hair);
     }
     .nav-inner { 
@@ -450,20 +464,21 @@
       outline: none;
       border-color: var(--border-strong);
       background: var(--surface-strong);
+      box-shadow: 0 0 0 3px rgba(0, 145, 255, 0.15);
     }
     .form-field select {
       cursor: pointer; padding-right: 2.5rem;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236B7B99' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238195B8' stroke-width='1.5'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 1rem center;
     }
     .form-field select option { background: var(--deep); color: var(--text-primary); }
     .form-field.has-error input,
     .form-field.has-error select,
-    .form-field.has-error textarea { border-color: #E5484D; }
+    .form-field.has-error textarea { border-color: var(--danger); }
     .field-error {
       display: none; font-family: var(--font-mono);
-      font-size: 0.72rem; color: #FF8A8D; padding-top: 0.15rem;
+      font-size: 0.72rem; color: var(--danger-soft); padding-top: 0.15rem;
     }
     .form-field.has-error .field-error { display: block; }
 
@@ -486,7 +501,7 @@
     }
     .form-status.is-visible { display: block; }
     .form-status.is-success { border-left-color: var(--electric); color: var(--text-primary); }
-    .form-status.is-error { border-left-color: #E5484D; }
+    .form-status.is-error { border-left-color: var(--danger); }
 
     /* Visibility Helpers */
     .gsap-fade-up, .gsap-stagger-grid > * {
@@ -922,20 +937,19 @@
           </div>
         </div>
 
-        <!-- Right: enquiry form (delivers to admin@mstrsoftwaresolutions.co.za via FormSubmit) -->
+        <!-- Right: enquiry form (handled by Netlify Forms; notification email set in Netlify > Forms) -->
         <div class="contact-form">
-          <form id="contactForm" action="https://formsubmit.co/admin@mstrsoftwaresolutions.co.za" method="POST" novalidate>
+          <form id="contactForm" name="contact" method="POST"
+                data-netlify="true" netlify-honeypot="bot-field"
+                action="/?sent=1#contact" novalidate>
 
-            <!-- FormSubmit configuration -->
-            <input type="hidden" name="_subject" value="New enquiry from mstrsoftwaresolutions.co.za">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_next" value="https://mstrsoftwaresolutions.co.za/?sent=1#contact">
+            <!-- Netlify needs the form name posted back with the submission -->
+            <input type="hidden" name="form-name" value="contact">
 
             <!-- Spam honeypot: bots fill this, humans never see it -->
             <div class="form-honey" aria-hidden="true">
               <label>Leave this field empty
-                <input type="text" name="_honey" tabindex="-1" autocomplete="off">
+                <input type="text" name="bot-field" tabindex="-1" autocomplete="off">
               </label>
             </div>
 
@@ -1091,12 +1105,11 @@
       });
     });
 
-    // Contact Form -> FormSubmit.co (delivers to admin@mstrsoftwaresolutions.co.za)
+    // Contact Form -> Netlify Forms (notifications configured in Netlify > Forms)
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
       const statusEl = document.getElementById('formStatus');
       const submitBtn = document.getElementById('contactSubmit');
-      const AJAX_ENDPOINT = 'https://formsubmit.co/ajax/admin@mstrsoftwaresolutions.co.za';
       const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       const setStatus = (message, kind) => {
@@ -1138,29 +1151,28 @@
         clearStatus();
         if (!validate()) return;
 
-        const payload = {};
-        new FormData(contactForm).forEach((value, key) => { payload[key] = value; });
+        // Netlify expects a urlencoded body containing form-name.
+        const body = new URLSearchParams(new FormData(contactForm)).toString();
 
         submitBtn.disabled = true;
         const originalLabel = submitBtn.textContent;
         submitBtn.textContent = 'Sending...';
 
         try {
-          const res = await fetch(AJAX_ENDPOINT, {
+          const res = await fetch(window.location.pathname, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify(payload)
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body
           });
-          const data = await res.json().catch(() => ({}));
 
-          if (res.ok && String(data.success) === 'true') {
+          if (res.ok) {
             contactForm.reset();
-            setStatus("Thanks — your message is on its way. We'll be in touch shortly.", 'success');
+            setStatus("Thanks - your message is on its way. We'll be in touch shortly.", 'success');
           } else {
-            setStatus(data.message || 'Something went wrong. Please email us directly at admin@mstrsoftwaresolutions.co.za.', 'error');
+            setStatus('Something went wrong. Please email us directly at admin@mstrsoftwaresolutions.co.za.', 'error');
           }
         } catch (err) {
-          // Network/CORS failure: fall back to a normal POST so the message still gets through.
+          // Network failure: fall back to a normal POST so the message still gets through.
           contactForm.submit();
           return;
         } finally {
@@ -1169,9 +1181,9 @@
         }
       });
 
-      // Success state for the no-JS fallback path (FormSubmit's _next redirect).
+      // Success state for the no-JS fallback path (Netlify's action redirect).
       if (new URLSearchParams(window.location.search).get('sent') === '1') {
-        setStatus("Thanks — your message is on its way. We'll be in touch shortly.", 'success');
+        setStatus("Thanks - your message is on its way. We'll be in touch shortly.", 'success');
       }
     }
 
