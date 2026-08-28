@@ -307,6 +307,8 @@
       background: var(--void);
     }
     .hero-bg-video {
+      /* object-fit governs the poster as well as the frames */
+      background: var(--void);
       position: absolute;
       top: 0;
       left: 0;
@@ -762,9 +764,12 @@
 
   <!-- Hero Section (Landing Page) -->
   <section class="hero">
-    <video class="hero-bg-video" id="heroVideo" autoplay loop muted playsinline>
-      <source src="video/mstr-bg-video.mp4" type="video/mp4">
-    </video>
+    <!-- Sources are attached by script, not markup, so the 350KB+ download only
+         happens where it is wanted. Everywhere else the poster is the hero. -->
+    <video class="hero-bg-video" id="heroVideo" loop muted playsinline preload="none"
+           poster="images/hero-poster.jpg"
+           data-webm="video/mstr-bg-video.webm"
+           data-mp4="video/mstr-bg-video.mp4"></video>
     
     <div class="container hero-content-wrapper">
       <div class="hero-copy gsap-hero-el">
@@ -1274,19 +1279,66 @@
       if (e.matches) setNav(false);
     });
 
-    // Play/Pause Video
+    // Hero Video
+    // The clip is the heaviest asset on the site. It is only fetched on larger
+    // screens, when motion is welcome, and when the visitor is not on a metered
+    // or data-saving connection - on a South African prepaid bundle an unprompted
+    // background video is a real cost. Everyone else gets the poster, and can
+    // still opt in with the play button.
     const video = document.getElementById('heroVideo');
     const playPauseBtn = document.getElementById('playPauseBtn');
-    
-    playPauseBtn.addEventListener('click', () => {
-      const play = video.paused;
-      if (play) { video.play(); } else { video.pause(); }
+
+    const setPlayBtn = (playing) => {
       // The label has to move with the icon, or a screen reader keeps announcing
       // the action the button no longer performs.
-      playPauseBtn.setAttribute('aria-label', play ? 'Pause background video' : 'Play background video');
-      playPauseBtn.innerHTML = play
+      playPauseBtn.setAttribute('aria-label', playing ? 'Pause background video' : 'Play background video');
+      playPauseBtn.innerHTML = playing
         ? "<i class='bx bx-pause' aria-hidden='true'></i>"
         : "<i class='bx bx-play' aria-hidden='true'></i>";
+    };
+
+    let sourcesAttached = false;
+    const attachSources = () => {
+      if (sourcesAttached) return;
+      sourcesAttached = true;
+      [['data-webm', 'video/webm'], ['data-mp4', 'video/mp4']].forEach(pair => {
+        const src = video.getAttribute(pair[0]);
+        if (!src) return;
+        const el = document.createElement('source');
+        el.src = src;
+        el.type = pair[1];
+        video.appendChild(el);
+      });
+      video.load();
+    };
+
+    const conn = navigator.connection || {};
+    const autoplayWanted =
+      window.matchMedia('(min-width: 601px)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+      !conn.saveData &&
+      !/2g/.test(conn.effectiveType || '');
+
+    if (autoplayWanted) {
+      attachSources();
+      // Muted + playsinline, so this is allowed without a gesture. If a browser
+      // refuses anyway, the poster stays and the button offers it manually.
+      const started = video.play();
+      if (started && started.catch) started.catch(() => setPlayBtn(false));
+      setPlayBtn(true);
+    } else {
+      setPlayBtn(false);
+    }
+
+    playPauseBtn.addEventListener('click', () => {
+      if (video.paused) {
+        attachSources();
+        video.play();
+        setPlayBtn(true);
+      } else {
+        video.pause();
+        setPlayBtn(false);
+      }
     });
 
     // Services Tabs
