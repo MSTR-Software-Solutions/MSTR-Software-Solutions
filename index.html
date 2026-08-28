@@ -484,7 +484,9 @@
     footer { padding-block: var(--space-2xl) var(--space-md); border-top: 1px solid var(--border-hair); background: var(--bg-raised); margin-top: var(--space-xl);}
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: var(--space-xl); margin-bottom: var(--space-xl); }
     .footer-col h4 { margin-bottom: var(--space-sm); color: var(--white); font-family: var(--font-mono); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em; }
-    .footer-col ul li { margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.95rem; }
+    .footer-col ul li { margin-bottom: 0.5rem; font-size: 0.95rem; }
+    .footer-col ul li a { color: var(--text-secondary); transition: color var(--dur-fast); }
+    .footer-col ul li a:hover { color: var(--electric-soft); }
 
     /* ---- Contact Form ---- */
     .contact-grid {
@@ -754,7 +756,7 @@
   </section>
 
   <!-- UI Reference Implementation: Why MSTR? -->
-  <section class="section section--dark">
+  <section id="values" class="section section--dark">
     <div class="container">
       <div class="section-head gsap-fade-up" style="margin-bottom: var(--space-lg);">
         <h2>Why work with us</h2>
@@ -896,7 +898,7 @@
             <h3 style="margin-block: 1rem; font-size: var(--fs-h3);">Rapid Care</h3>
             <p style="color: var(--text-secondary);">Technology designed to make care more accessible. A digital platform that connects technology with the delivery and management of care-related services, simplifying processes for users and providers.</p>
             <div class="btn-row" style="margin-top: 2rem;">
-              <a href="#" class="btn btn--ghost">Explore Rapid Care</a>
+              <a href="#contact" class="btn btn--ghost">Enquire about Rapid Care</a>
             </div>
           </div>
           <div class="project-media">
@@ -1049,12 +1051,12 @@
           </div>
           <div class="contact-direct">
             <a href="mailto:admin@mstrsoftwaresolutions.co.za">
-              <i class='bx bx-envelope'></i>
+              <i class='bx bx-envelope' aria-hidden="true"></i>
               <span>admin@mstrsoftwaresolutions.co.za</span>
             </a>
-            <a href="https://wa.me/27718163210" target="_blank" rel="noopener noreferrer">
-              <i class='bx bxl-whatsapp'></i>
-              <span>+27 71 816 3210</span>
+            <a href="https://wa.me/27844831503" target="_blank" rel="noopener noreferrer">
+              <i class='bx bxl-whatsapp' aria-hidden="true"></i>
+              <span>+27 84 483 1503</span>
             </a>
           </div>
         </div>
@@ -1143,26 +1145,26 @@
         <div class="footer-col">
           <h4>Services</h4>
           <ul>
-            <li><a href="#">Software Development</a></li>
-            <li><a href="#">Mobile Applications</a></li>
-            <li><a href="#">Web Applications</a></li>
-            <li><a href="#">SaaS Development</a></li>
+            <li><a href="#services" data-service-tab="tab-custom">Software Development</a></li>
+            <li><a href="#services" data-service-tab="tab-mobile">Mobile Applications</a></li>
+            <li><a href="#services" data-service-tab="tab-web">Web Applications</a></li>
+            <li><a href="#services" data-service-tab="tab-saas">SaaS Development</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Company</h4>
           <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Our Approach</a></li>
-            <li><a href="#">Our Values</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#approach">Our Approach</a></li>
+            <li><a href="#values">Our Values</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Projects</h4>
           <ul>
-            <li><a href="#">Rapid Care</a></li>
-            <li><a href="#">Ngobe Exalt</a></li>
+            <li><a href="#projects">Rapid Care</a></li>
+            <li><a href="https://www.ngobeexalt.com/" target="_blank" rel="noopener noreferrer">Ngobe Exalt</a></li>
           </ul>
         </div>
       </div>
@@ -1247,6 +1249,14 @@
         const targetPanel = document.getElementById(tab.dataset.target);
         targetPanel.classList.add('is-active');
         if (window.gsap) gsap.fromTo(targetPanel, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 });
+      });
+    });
+
+    // Footer service links open the matching tab before scrolling to #services.
+    document.querySelectorAll('[data-service-tab]').forEach(link => {
+      link.addEventListener('click', () => {
+        const tab = document.querySelector('.service-tab[data-target="' + link.dataset.serviceTab + '"]');
+        if (tab) tab.click();
       });
     });
 
