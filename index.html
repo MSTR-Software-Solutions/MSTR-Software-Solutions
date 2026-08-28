@@ -3,14 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MSTR Software Solutions</title>
+  <title>MSTR Software Solutions | Custom Software, Mobile &amp; Web Apps</title>
+  <meta name="description" content="MSTR Software Solutions is a South African software studio building custom mobile apps, web applications, SaaS platforms and business systems.">
+  <meta name="theme-color" content="#03050E">
+  <link rel="canonical" href="https://mstrsoftwaresolutions.co.za/">
 
-<!-- Standard Favicons (for browser tabs) -->
-  <link rel="icon" type="image/png" sizes="64x64" href="images/mstr.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="images/mstr.png">
-  
-  <!-- Apple Touch Icon (for iOS devices/bookmarks) -->
-  <link rel="apple-touch-icon" sizes="180x180" href="images/mstr.png">
+  <!-- Social share -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MSTR Software Solutions">
+  <meta property="og:url" content="https://mstrsoftwaresolutions.co.za/">
+  <meta property="og:title" content="MSTR Software Solutions">
+  <meta property="og:description" content="MSTR Software Solutions is a South African software studio building custom mobile apps, web applications, SaaS platforms and business systems.">
+  <meta property="og:image" content="https://mstrsoftwaresolutions.co.za/images/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="MSTR Software Solutions - endless solutions, driven by innovation, built by four.">
+  <meta property="og:locale" content="en_ZA">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MSTR Software Solutions">
+  <meta name="twitter:description" content="MSTR Software Solutions is a South African software studio building custom mobile apps, web applications, SaaS platforms and business systems.">
+  <meta name="twitter:image" content="https://mstrsoftwaresolutions.co.za/images/og-card.png">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="images/favicon-64.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,11 +36,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Boxicons (Vector Icons) -->
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-  <!-- GSAP for Animations -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <!-- GSAP for Animations. Deferred: it is only needed once the DOM exists, and
+       nothing on the critical render path depends on it. -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
   <style>
     /* ==========================================================================
@@ -41,6 +62,10 @@
       --white: #FFFFFF;
       --electric: #0091FF;
       --electric-soft: #4FB8FF;
+      /* Button fill only. The vivid --electric stays on the border and glow;
+         white text needs <=0.183 relative luminance to clear WCAG AA. */
+      --electric-deep: #0072E0;
+      --electric-deeper: #0068CC;
       --cyan: #22D3EE;
       --electric-glow: rgba(0, 145, 255, 0.45);
 
@@ -138,6 +163,17 @@
     .section-head h2 { font-size: var(--fs-h2); margin-top: var(--space-sm); }
     .section-head p { margin-top: var(--space-md); font-size: var(--fs-body-lg); color: var(--text-secondary); }
 
+    /* Section kicker. Same treatment as .footer-col h4 and the form labels. */
+    .eyebrow {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: var(--fs-eyebrow);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--electric-soft);
+    }
+
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2xs);
       font-weight: 500; padding: 0.8rem 1.6rem;
@@ -145,14 +181,16 @@
       font-family: var(--font-body); font-size: 0.9rem;
     }
     .btn--primary {
-      background: linear-gradient(135deg, var(--electric) 0%, #3AA9FF 100%);
+      background: linear-gradient(135deg, var(--electric-deeper) 0%, var(--electric-deep) 100%);
       color: #fff;
-      box-shadow: 0 0 0 1px rgba(0, 145, 255, 0.5), 0 6px 20px -6px var(--electric-glow);
+      box-shadow: 0 0 0 1px rgba(0, 145, 255, 0.55), 0 6px 20px -6px var(--electric-glow);
     }
     .btn--primary:hover {
-      background: linear-gradient(135deg, #23A0FF 0%, var(--electric-soft) 100%);
+      /* Lift comes from the ring and glow, not the fill - brightening the fill
+         would push the white label back below 4.5:1. */
+      background: linear-gradient(135deg, var(--electric-deep) 0%, var(--electric-deeper) 100%);
       transform: translateY(-2px);
-      box-shadow: 0 0 0 1px rgba(79, 184, 255, 0.6), 0 10px 28px -6px var(--electric-glow);
+      box-shadow: 0 0 0 1px rgba(79, 184, 255, 0.85), 0 10px 28px -6px var(--electric-glow);
     }
     .btn--ghost {
       background: transparent; border: 1px solid var(--border-hair); color: var(--white);
@@ -178,7 +216,7 @@
       display: flex; align-items: center; gap: 0.3rem; 
       font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; 
     }
-    .brand img { height: 50px; width: auto; object-fit: contain; }
+    .brand img { height: 40px; width: auto; object-fit: contain; }
     .nav-links { 
       display: flex; gap: var(--space-md); justify-content: center; 
     }
@@ -196,6 +234,66 @@
       font-size: 0.85rem;
     }
 
+    /* Hamburger + drawer. Shown at the same breakpoint that hides .nav-links. */
+    .nav-toggle {
+      display: none;
+      align-items: center; justify-content: center;
+      width: 42px; height: 42px;
+      border: 1px solid var(--border-hair);
+      color: var(--white);
+      transition: border-color var(--dur-fast), background var(--dur-fast);
+    }
+    .nav-toggle:hover { border-color: var(--border-strong); background: var(--surface-strong); }
+    .nav-toggle i { font-size: 1.5rem; }
+
+    .mobile-nav {
+      position: absolute;
+      inset-inline: 0;
+      top: 100%;
+      background: rgba(3, 5, 14, 0.98);
+      backdrop-filter: blur(16px);
+      border-block: 1px solid var(--border-hair);
+      /* visibility:hidden also takes the links out of the tab and AT order */
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity var(--dur-med) var(--ease-out),
+                  transform var(--dur-med) var(--ease-out),
+                  visibility 0s linear var(--dur-med);
+    }
+    .mobile-nav.is-open {
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0s;
+    }
+    .mobile-nav a {
+      display: block;
+      padding: var(--space-md) var(--container-pad);
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--white);
+      border-bottom: 1px solid var(--border-hair);
+      transition: background var(--dur-fast), color var(--dur-fast);
+    }
+    .mobile-nav a:last-child { border-bottom: none; }
+    .mobile-nav a:hover, .mobile-nav a:focus-visible { background: var(--surface-strong); color: var(--electric-soft); }
+
+    /* Skip link - first focusable element, visible only once focused. */
+    .skip-link {
+      position: absolute;
+      left: var(--space-sm); top: -100px;
+      z-index: 200;
+      padding: 0.75rem 1.25rem;
+      background: var(--electric-deep);
+      color: #fff;
+      font-size: 0.9rem; font-weight: 500;
+      transition: top var(--dur-fast) var(--ease-standard);
+    }
+    .skip-link:focus { top: var(--space-sm); }
+
+    :focus-visible { outline: 2px solid var(--electric-soft); outline-offset: 3px; }
+
     /* ---- Hero ---- */
     .hero { 
       position: relative; 
@@ -209,6 +307,8 @@
       background: var(--void);
     }
     .hero-bg-video {
+      /* object-fit governs the poster as well as the frames */
+      background: var(--void);
       position: absolute;
       top: 0;
       left: 0;
@@ -389,8 +489,14 @@
     .faq-list { max-width: 820px; margin: 0 auto; border-top: 1px solid var(--border-hair); }
     .faq-item { border-bottom: 1px solid var(--border-hair); }
     .faq-question { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: var(--space-md) 0; font-size: var(--fs-h6); font-weight: 500; }
-    .faq-answer { max-height: 0; overflow: hidden; transition: max-height var(--dur-med) var(--ease-out); color: var(--text-secondary); }
-    .faq-item.is-open .faq-answer { max-height: 300px; padding-bottom: var(--space-md); }
+    .faq-answer {
+      max-height: 0; overflow: hidden; visibility: hidden; color: var(--text-secondary);
+      transition: max-height var(--dur-med) var(--ease-out), visibility 0s linear var(--dur-med);
+    }
+    .faq-item.is-open .faq-answer {
+      max-height: 300px; visibility: visible; padding-bottom: var(--space-md);
+      transition: max-height var(--dur-med) var(--ease-out), visibility 0s;
+    }
     .plus { font-size: 1.5rem; transition: transform 0.3s; font-family: var(--font-mono); font-weight: 400; }
     .faq-item.is-open .plus { transform: rotate(45deg); color: var(--electric-soft); }
 
@@ -398,7 +504,9 @@
     footer { padding-block: var(--space-2xl) var(--space-md); border-top: 1px solid var(--border-hair); background: var(--bg-raised); margin-top: var(--space-xl);}
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: var(--space-xl); margin-bottom: var(--space-xl); }
     .footer-col h4 { margin-bottom: var(--space-sm); color: var(--white); font-family: var(--font-mono); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em; }
-    .footer-col ul li { margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.95rem; }
+    .footer-col ul li { margin-bottom: 0.5rem; font-size: 0.95rem; }
+    .footer-col ul li a { color: var(--text-secondary); transition: color var(--dur-fast); }
+    .footer-col ul li a:hover { color: var(--electric-soft); }
 
     /* ---- Contact Form ---- */
     .contact-grid {
@@ -502,15 +610,29 @@
     .form-status.is-visible { display: block; }
     .form-status.is-success { border-left-color: var(--electric); color: var(--text-primary); }
     .form-status.is-error { border-left-color: var(--danger); }
+    .form-status-link { color: var(--electric-soft); text-decoration: underline; }
+    .form-status-link:hover { color: var(--white); }
 
-    /* Visibility Helpers */
+    /* Visibility Helpers
+       Animated content starts hidden so GSAP can reveal it. GSAP is a third-party
+       CDN script, so it is treated as optional - three escape hatches guarantee
+       the content is never left hidden: .no-anim (set by script when GSAP did not
+       load), the reduced-motion query, and the <noscript> block in <head>. */
     .gsap-fade-up, .gsap-stagger-grid > * {
-      visibility: hidden; 
+      visibility: hidden;
     }
-    .no-js .gsap-fade-up, .no-js .gsap-stagger-grid > * {
+    .no-anim .gsap-fade-up,
+    .no-anim .gsap-stagger-grid > * {
       visibility: visible;
       opacity: 1;
       transform: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .gsap-fade-up, .gsap-stagger-grid > * {
+        visibility: visible;
+        opacity: 1;
+        transform: none;
+      }
     }
 
     @media (max-width: 1024px) {
@@ -519,8 +641,9 @@
       .philosophy-grid { grid-template-columns: 1fr; }
       .pillar-card { border-right: none; border-bottom: 1px solid var(--border-hair); }
       .pillar-card:last-child { border-bottom: none; }
-      .nav-inner { grid-template-columns: auto 1fr; }
+      .nav-inner { grid-template-columns: auto 1fr auto; gap: var(--space-sm); }
       .nav-links { display: none; }
+      .nav-toggle { display: flex; }
     }
 
     @media (max-width: 900px) {
@@ -557,15 +680,58 @@
     }
     
   </style>
+
+  <noscript>
+    <style>
+      .gsap-fade-up,
+      .gsap-stagger-grid > * { visibility: visible !important; opacity: 1 !important; transform: none !important; }
+    </style>
+  </noscript>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "@id": "https://mstrsoftwaresolutions.co.za/#organization",
+    "name": "MSTR Software Solutions",
+    "url": "https://mstrsoftwaresolutions.co.za/",
+    "logo": "https://mstrsoftwaresolutions.co.za/images/apple-touch-icon.png",
+    "image": "https://mstrsoftwaresolutions.co.za/images/og-card.png",
+    "description": "MSTR Software Solutions is a South African software studio building custom mobile apps, web applications, SaaS platforms and business systems.",
+    "slogan": "Endless solutions. Driven by innovation. Built by Four.",
+    "foundingDate": "2026",
+    "knowsAbout": [
+      "Mobile application development",
+      "Web application development",
+      "SaaS platform development",
+      "Custom business software"
+    ],
+    "areaServed": {
+      "@type": "Country",
+      "name": "South Africa"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "ZA"
+    },
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "contactType": "sales",
+      "email": "admin@mstrsoftwaresolutions.co.za",
+      "telephone": "+27844831503",
+      "availableLanguage": "English",
+      "areaServed": "ZA"
+    }]
+  }
+  </script>
 </head>
 <body>
-  <script>document.body.classList.remove('no-js');</script>
+  <a class="skip-link" href="#main">Skip to main content</a>
 
   <!-- Header -->
   <header class="site-header" id="header">
     <div class="container nav-inner">
       <a href="#" class="brand">
-        <img src="images/mstr-logo.png" alt="MSTR Logo"> 
+        <img src="images/mstr-logo.png" alt="MSTR Software Solutions logo" width="73" height="80"> 
         <div class="brand-full">
           <span>MSTR</span>
         </div>
@@ -579,14 +745,31 @@
       <div class="nav-cta">
         <a href="#contact" class="btn btn--ghost">Contact Us</a>
       </div>
+      <button class="nav-toggle" id="navToggle" type="button"
+              aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+        <i class='bx bx-menu' aria-hidden="true"></i>
+      </button>
     </div>
+
+    <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#projects">Projects</a>
+      <a href="#approach">Approach</a>
+      <a href="#contact">Contact</a>
+    </nav>
   </header>
+
+  <main id="main">
 
   <!-- Hero Section (Landing Page) -->
   <section class="hero">
-    <video class="hero-bg-video" id="heroVideo" autoplay loop muted playsinline>
-      <source src="video/mstr-bg-video.mp4" type="video/mp4">
-    </video>
+    <!-- Sources are attached by script, not markup, so the 350KB+ download only
+         happens where it is wanted. Everywhere else the poster is the hero. -->
+    <video class="hero-bg-video" id="heroVideo" loop muted playsinline preload="none"
+           poster="images/hero-poster.jpg"
+           data-webm="video/mstr-bg-video.webm"
+           data-mp4="video/mstr-bg-video.mp4"></video>
     
     <div class="container hero-content-wrapper">
       <div class="hero-copy gsap-hero-el">
@@ -596,8 +779,8 @@
       </div>
       
       <div class="hero-controls-wrapper gsap-hero-el">
-        <button class="hero-controls" id="playPauseBtn" aria-label="Pause Video">
-          <i class='bx bx-pause'></i>
+        <button class="hero-controls" id="playPauseBtn" type="button" aria-label="Pause background video">
+          <i class='bx bx-pause' aria-hidden="true"></i>
         </button>
       </div>
     </div>
@@ -632,7 +815,7 @@
   </section>
 
   <!-- UI Reference Implementation: Why MSTR? -->
-  <section class="section section--dark">
+  <section id="values" class="section section--dark">
     <div class="container">
       <div class="section-head gsap-fade-up" style="margin-bottom: var(--space-lg);">
         <h2>Why work with us</h2>
@@ -774,7 +957,7 @@
             <h3 style="margin-block: 1rem; font-size: var(--fs-h3);">Rapid Care</h3>
             <p style="color: var(--text-secondary);">Technology designed to make care more accessible. A digital platform that connects technology with the delivery and management of care-related services, simplifying processes for users and providers.</p>
             <div class="btn-row" style="margin-top: 2rem;">
-              <a href="#" class="btn btn--ghost">Explore Rapid Care</a>
+              <a href="#contact" class="btn btn--ghost">Enquire about Rapid Care</a>
             </div>
           </div>
           <div class="project-media">
@@ -890,20 +1073,20 @@
       </div>
       <div class="faq-list gsap-stagger-grid">
         <div class="faq-item">
-          <button class="faq-question">What types of software does MSTR develop? <span class="plus">+</span></button>
-          <div class="faq-answer"><p>We develop custom mobile applications, web applications, SaaS platforms, business systems, APIs, and other software solutions based on individual project requirements.</p></div>
+          <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a-1">What types of software does MSTR develop? <span class="plus">+</span></button>
+          <div class="faq-answer" id="faq-a-1"><p>We develop custom mobile applications, web applications, SaaS platforms, business systems, APIs, and other software solutions based on individual project requirements.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-question">Can you build an application from an idea? <span class="plus">+</span></button>
-          <div class="faq-answer"><p>Yes. You don't need to have technical knowledge or a finished specification. We can help transform your idea into requirements, a development plan, and eventually a working product.</p></div>
+          <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a-2">Can you build an application from an idea? <span class="plus">+</span></button>
+          <div class="faq-answer" id="faq-a-2"><p>Yes. You don't need to have technical knowledge or a finished specification. We can help transform your idea into requirements, a development plan, and eventually a working product.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-question">Do you work with small businesses? <span class="plus">+</span></button>
-          <div class="faq-answer"><p>Absolutely. Our services are designed for individuals, startups, small businesses, and larger organizations.</p></div>
+          <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a-3">Do you work with small businesses? <span class="plus">+</span></button>
+          <div class="faq-answer" id="faq-a-3"><p>Absolutely. Our services are designed for individuals, startups, small businesses, and larger organizations.</p></div>
         </div>
         <div class="faq-item">
-          <button class="faq-question">How much does software development cost? <span class="plus">+</span></button>
-          <div class="faq-answer"><p>There is no single price because every project is different. Costs depend on factors such as functionality, complexity, and development time. We prefer to understand the project first and provide an appropriate proposal.</p></div>
+          <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a-4">How much does software development cost? <span class="plus">+</span></button>
+          <div class="faq-answer" id="faq-a-4"><p>There is no single price because every project is different. Costs depend on factors such as functionality, complexity, and development time. We prefer to understand the project first and provide an appropriate proposal.</p></div>
         </div>
       </div>
     </div>
@@ -927,12 +1110,12 @@
           </div>
           <div class="contact-direct">
             <a href="mailto:admin@mstrsoftwaresolutions.co.za">
-              <i class='bx bx-envelope'></i>
+              <i class='bx bx-envelope' aria-hidden="true"></i>
               <span>admin@mstrsoftwaresolutions.co.za</span>
             </a>
-            <a href="https://wa.me/27718163210" target="_blank" rel="noopener noreferrer">
-              <i class='bx bxl-whatsapp'></i>
-              <span>+27 71 816 3210</span>
+            <a href="https://wa.me/27844831503" target="_blank" rel="noopener noreferrer">
+              <i class='bx bxl-whatsapp' aria-hidden="true"></i>
+              <span>+27 84 483 1503</span>
             </a>
           </div>
         </div>
@@ -1003,13 +1186,15 @@
     </div>
   </section>
 
+  </main>
+
   <!-- Footer -->
   <footer>
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
           <a href="#" class="brand" style="margin-bottom: 1.5rem;">
-            <img src="images/mstr-logo.png" alt="MSTR Logo" style="height: 30px;">
+            <img src="images/mstr-logo.png" alt="MSTR Software Solutions logo" width="73" height="80" style="height: 28px;">
             <div class="brand-full"><span>MSTR</span></div>
           </a>
           <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 250px;">
@@ -1019,26 +1204,26 @@
         <div class="footer-col">
           <h4>Services</h4>
           <ul>
-            <li><a href="#">Software Development</a></li>
-            <li><a href="#">Mobile Applications</a></li>
-            <li><a href="#">Web Applications</a></li>
-            <li><a href="#">SaaS Development</a></li>
+            <li><a href="#services" data-service-tab="tab-custom">Software Development</a></li>
+            <li><a href="#services" data-service-tab="tab-mobile">Mobile Applications</a></li>
+            <li><a href="#services" data-service-tab="tab-web">Web Applications</a></li>
+            <li><a href="#services" data-service-tab="tab-saas">SaaS Development</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Company</h4>
           <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Our Approach</a></li>
-            <li><a href="#">Our Values</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#approach">Our Approach</a></li>
+            <li><a href="#values">Our Values</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Projects</h4>
           <ul>
-            <li><a href="#">Rapid Care</a></li>
-            <li><a href="#">Ngobe Exalt</a></li>
+            <li><a href="#projects">Rapid Care</a></li>
+            <li><a href="https://www.ngobeexalt.com/" target="_blank" rel="noopener noreferrer">Ngobe Exalt</a></li>
           </ul>
         </div>
       </div>
@@ -1061,17 +1246,98 @@
       }
     });
 
-    // Play/Pause Video
+    // Mobile Nav
+    const navToggle = document.getElementById('navToggle');
+    const mobileNav = document.getElementById('mobileNav');
+
+    const setNav = (open) => {
+      mobileNav.classList.toggle('is-open', open);
+      navToggle.setAttribute('aria-expanded', String(open));
+      navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      navToggle.innerHTML = open
+        ? "<i class='bx bx-x' aria-hidden='true'></i>"
+        : "<i class='bx bx-menu' aria-hidden='true'></i>";
+    };
+
+    navToggle.addEventListener('click', () => {
+      setNav(!mobileNav.classList.contains('is-open'));
+    });
+
+    // Close on link tap, on Escape, and if the viewport grows past the breakpoint.
+    mobileNav.addEventListener('click', (e) => {
+      if (e.target.closest('a')) setNav(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileNav.classList.contains('is-open')) {
+        setNav(false);
+        navToggle.focus();
+      }
+    });
+
+    window.matchMedia('(min-width: 1025px)').addEventListener('change', (e) => {
+      if (e.matches) setNav(false);
+    });
+
+    // Hero Video
+    // The clip is the heaviest asset on the site. It is only fetched on larger
+    // screens, when motion is welcome, and when the visitor is not on a metered
+    // or data-saving connection - on a South African prepaid bundle an unprompted
+    // background video is a real cost. Everyone else gets the poster, and can
+    // still opt in with the play button.
     const video = document.getElementById('heroVideo');
     const playPauseBtn = document.getElementById('playPauseBtn');
-    
+
+    const setPlayBtn = (playing) => {
+      // The label has to move with the icon, or a screen reader keeps announcing
+      // the action the button no longer performs.
+      playPauseBtn.setAttribute('aria-label', playing ? 'Pause background video' : 'Play background video');
+      playPauseBtn.innerHTML = playing
+        ? "<i class='bx bx-pause' aria-hidden='true'></i>"
+        : "<i class='bx bx-play' aria-hidden='true'></i>";
+    };
+
+    let sourcesAttached = false;
+    const attachSources = () => {
+      if (sourcesAttached) return;
+      sourcesAttached = true;
+      [['data-webm', 'video/webm'], ['data-mp4', 'video/mp4']].forEach(pair => {
+        const src = video.getAttribute(pair[0]);
+        if (!src) return;
+        const el = document.createElement('source');
+        el.src = src;
+        el.type = pair[1];
+        video.appendChild(el);
+      });
+      video.load();
+    };
+
+    const conn = navigator.connection || {};
+    const autoplayWanted =
+      window.matchMedia('(min-width: 601px)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+      !conn.saveData &&
+      !/2g/.test(conn.effectiveType || '');
+
+    if (autoplayWanted) {
+      attachSources();
+      // Muted + playsinline, so this is allowed without a gesture. If a browser
+      // refuses anyway, the poster stays and the button offers it manually.
+      const started = video.play();
+      if (started && started.catch) started.catch(() => setPlayBtn(false));
+      setPlayBtn(true);
+    } else {
+      setPlayBtn(false);
+    }
+
     playPauseBtn.addEventListener('click', () => {
       if (video.paused) {
+        attachSources();
         video.play();
-        playPauseBtn.innerHTML = "<i class='bx bx-pause'></i>";
+        setPlayBtn(true);
       } else {
         video.pause();
-        playPauseBtn.innerHTML = "<i class='bx bx-play'></i>";
+        setPlayBtn(false);
       }
     });
 
@@ -1088,7 +1354,15 @@
         
         const targetPanel = document.getElementById(tab.dataset.target);
         targetPanel.classList.add('is-active');
-        gsap.fromTo(targetPanel, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 });
+        if (window.gsap) gsap.fromTo(targetPanel, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 });
+      });
+    });
+
+    // Footer service links open the matching tab before scrolling to #services.
+    document.querySelectorAll('[data-service-tab]').forEach(link => {
+      link.addEventListener('click', () => {
+        const tab = document.querySelector('.service-tab[data-target="' + link.dataset.serviceTab + '"]');
+        if (tab) tab.click();
       });
     });
 
@@ -1098,9 +1372,13 @@
       const btn = item.querySelector('.faq-question');
       btn.addEventListener('click', () => {
         const isOpen = item.classList.contains('is-open');
-        faqItems.forEach(faq => faq.classList.remove('is-open'));
+        faqItems.forEach(faq => {
+          faq.classList.remove('is-open');
+          faq.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+        });
         if (!isOpen) {
           item.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
         }
       });
     });
@@ -1112,9 +1390,37 @@
       const submitBtn = document.getElementById('contactSubmit');
       const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+      const CONTACT_EMAIL = 'admin@mstrsoftwaresolutions.co.za';
+
       const setStatus = (message, kind) => {
         statusEl.textContent = message;
         statusEl.className = 'form-status is-visible ' + (kind === 'success' ? 'is-success' : 'is-error');
+      };
+
+      // Send failed. Don't strand the visitor with what they just typed - hand them a
+      // mailto: carrying the same content, so one click still reaches us.
+      const setSendFailed = () => {
+        const get = (n) => (contactForm.elements[n] ? contactForm.elements[n].value.trim() : '');
+        const body = [
+          'Name: ' + get('Name'),
+          'Email: ' + get('Email'),
+          'Phone: ' + get('Phone'),
+          'Service: ' + get('Service'),
+          '',
+          get('Message')
+        ].join('\n');
+        const href = 'mailto:' + CONTACT_EMAIL +
+          '?subject=' + encodeURIComponent('Enquiry - ' + (get('Service') || 'General Enquiry')) +
+          '&body=' + encodeURIComponent(body);
+
+        statusEl.className = 'form-status is-visible is-error';
+        statusEl.textContent = "We couldn't send that from the site. ";
+        const link = document.createElement('a');
+        link.href = href;
+        link.className = 'form-status-link';
+        link.textContent = 'Email it to us instead';
+        statusEl.appendChild(link);
+        statusEl.appendChild(document.createTextNode(' - your message is already filled in.'));
       };
 
       const clearStatus = () => { statusEl.className = 'form-status'; statusEl.textContent = ''; };
@@ -1169,12 +1475,13 @@
             contactForm.reset();
             setStatus("Thanks - your message is on its way. We'll be in touch shortly.", 'success');
           } else {
-            setStatus('Something went wrong. Please email us directly at admin@mstrsoftwaresolutions.co.za.', 'error');
+            // Most likely the form handler isn't registered on the host yet.
+            setSendFailed();
           }
         } catch (err) {
-          // Network failure: fall back to a normal POST so the message still gets through.
-          contactForm.submit();
-          return;
+          // Network failure. A native re-POST would land the visitor on an error page
+          // and lose what they typed, so keep them here and offer the email route.
+          setSendFailed();
         } finally {
           submitBtn.disabled = false;
           submitBtn.textContent = originalLabel;
@@ -1187,54 +1494,67 @@
       }
     }
 
-    // GSAP Animations Fixed (Using fromTo and handling visibility)
-    gsap.registerPlugin(ScrollTrigger);
+    // Animation layer.
+    // GSAP is deferred and comes from a CDN, so this waits for it and treats it as
+    // optional. If it never arrived - outage, ad blocker, proxy, offline - or the
+    // visitor asked for reduced motion, reveal everything and skip the tweens
+    // rather than leaving most of the page at visibility: hidden.
+    document.addEventListener('DOMContentLoaded', () => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    gsap.set('.gsap-hero-el > *, .gsap-hero-el', { visibility: 'visible' });
-    gsap.set('.gsap-fade-up > *', { visibility: 'visible' });
+      if (!window.gsap || !window.ScrollTrigger || reduceMotion) {
+        document.documentElement.classList.add('no-anim');
+        return;
+      }
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.set('.gsap-hero-el > *, .gsap-hero-el', { visibility: 'visible' });
+      gsap.set('.gsap-fade-up > *', { visibility: 'visible' });
     
-    // 1. Hero Entrance Animation
-    gsap.fromTo(".gsap-hero-el", 
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out", delay: 0.2 }
-    );
-
-    // 2. Scroll Animations for Section Headers and individual elements
-    gsap.utils.toArray('.gsap-fade-up').forEach(element => {
-      gsap.set(element.children, { visibility: 'visible' });
-      gsap.fromTo(element.children, 
-        { y: 40, opacity: 0 },
-        {
-          scrollTrigger: {
-            trigger: element,
-            start: "top 85%",
-          },
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power2.out"
-        }
+      // 1. Hero Entrance Animation
+      gsap.fromTo(".gsap-hero-el", 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out", delay: 0.2 }
       );
-    });
 
-    // 3. Scroll Animations for Staggered Grids/Cards
-    gsap.utils.toArray('.gsap-stagger-grid').forEach(grid => {
-      gsap.set(grid.children, { visibility: 'visible' });
-      gsap.fromTo(grid.children, 
-        { y: 40, opacity: 0 },
-        {
-          scrollTrigger: {
-            trigger: grid,
-            start: "top 85%",
-          },
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power2.out"
-        }
-      );
+      // 2. Scroll Animations for Section Headers and individual elements
+      gsap.utils.toArray('.gsap-fade-up').forEach(element => {
+        gsap.set(element.children, { visibility: 'visible' });
+        gsap.fromTo(element.children, 
+          { y: 40, opacity: 0 },
+          {
+            scrollTrigger: {
+              trigger: element,
+              start: "top 85%",
+            },
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power2.out"
+          }
+        );
+      });
+
+      // 3. Scroll Animations for Staggered Grids/Cards
+      gsap.utils.toArray('.gsap-stagger-grid').forEach(grid => {
+        gsap.set(grid.children, { visibility: 'visible' });
+        gsap.fromTo(grid.children, 
+          { y: 40, opacity: 0 },
+          {
+            scrollTrigger: {
+              trigger: grid,
+              start: "top 85%",
+            },
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power2.out"
+          }
+        );
+      });
     });
   </script>
 </body>
