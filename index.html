@@ -502,6 +502,8 @@
     .form-status.is-visible { display: block; }
     .form-status.is-success { border-left-color: var(--electric); color: var(--text-primary); }
     .form-status.is-error { border-left-color: var(--danger); }
+    .form-status-link { color: var(--electric-soft); text-decoration: underline; }
+    .form-status-link:hover { color: var(--white); }
 
     /* Visibility Helpers */
     .gsap-fade-up, .gsap-stagger-grid > * {
@@ -1112,9 +1114,38 @@
       const submitBtn = document.getElementById('contactSubmit');
       const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+      const CONTACT_EMAIL = 'admin@mstrsoftwaresolutions.co.za';
+
       const setStatus = (message, kind) => {
         statusEl.textContent = message;
         statusEl.className = 'form-status is-visible ' + (kind === 'success' ? 'is-success' : 'is-error');
+      };
+
+      // Send failed. Don't strand the visitor with what they just typed - hand them a
+      // mailto: carrying the same content, so one click still reaches us.
+      const setSendFailed = () => {
+        const get = (n) => (contactForm.elements[n] ? contactForm.elements[n].value.trim() : '');
+        const body = [
+          'Name: ' + get('Name'),
+          'Email: ' + get('Email'),
+          'Phone: ' + get('Phone'),
+          'Service: ' + get('Service'),
+          '',
+          get('Message')
+        ].join('
+');
+        const href = 'mailto:' + CONTACT_EMAIL +
+          '?subject=' + encodeURIComponent('Enquiry - ' + (get('Service') || 'General Enquiry')) +
+          '&body=' + encodeURIComponent(body);
+
+        statusEl.className = 'form-status is-visible is-error';
+        statusEl.textContent = "We couldn't send that from the site. ";
+        const link = document.createElement('a');
+        link.href = href;
+        link.className = 'form-status-link';
+        link.textContent = 'Email it to us instead';
+        statusEl.appendChild(link);
+        statusEl.appendChild(document.createTextNode(' - your message is already filled in.'));
       };
 
       const clearStatus = () => { statusEl.className = 'form-status'; statusEl.textContent = ''; };
@@ -1169,12 +1200,13 @@
             contactForm.reset();
             setStatus("Thanks - your message is on its way. We'll be in touch shortly.", 'success');
           } else {
-            setStatus('Something went wrong. Please email us directly at admin@mstrsoftwaresolutions.co.za.', 'error');
+            // Most likely the form handler isn't registered on the host yet.
+            setSendFailed();
           }
         } catch (err) {
-          // Network failure: fall back to a normal POST so the message still gets through.
-          contactForm.submit();
-          return;
+          // Network failure. A native re-POST would land the visitor on an error page
+          // and lose what they typed, so keep them here and offer the email route.
+          setSendFailed();
         } finally {
           submitBtn.disabled = false;
           submitBtn.textContent = originalLabel;
